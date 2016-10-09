@@ -5,6 +5,7 @@ services:
     image: mysql:5.7
     volumes:
       - /var/lib/mysql
+      - ./schema:/docker-entrypoint-initdb.d
     expose:
       - "3306"
     environment:
