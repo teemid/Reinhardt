@@ -1,4 +1,4 @@
 use coffee_house;
 
-INSERT INTO beverages (name, price) VALUES
+INSERT INTO coffee_products (name, price) VALUES
     ('Kaffe', 29), ('Espresso', 39), ('Java', 35);
