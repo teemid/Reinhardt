@@ -43,24 +43,14 @@ class Application
 
         foreach ($url_config as $regex => $view)
         {
-            // print_r($url_config);
-            // print('<br>' . $path . '<br>');
             preg_match($regex, $path, $matches);
-            // print('<br>');
-            // print_r($matches);
-            // print('<br>');
 
             if ($matches[0] and is_array($view))
             {
-                // print('is array <br>');
-                // print_r($view);
-                // print('<br>');
                 return $this->matchUrl($url, $view);
             }
             elseif ($matches[0])
             {
-                // print('is view <br>');
-                // print($view);
                 return $view;
             }
         }
