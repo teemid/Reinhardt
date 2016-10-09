@@ -1,0 +1,35 @@
+version: '2'
+services:
+  db:
+    container_name: reinhardt_db
+    image: mysql:5.7
+    volumes:
+      - /var/lib/mysql
+    expose:
+      - "3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=admin
+      - MYSQL_DATABASE=coffee_house
+      - MYSQL_USER=test
+      - MYSQL_PASSWORD=test
+  php:
+    container_name: reinhardt_app
+    build: ./docker/images/php-fpm
+    expose:
+      - 9000
+    volumes:
+      - ./source:/var/www/public
+    working_dir: /var/www
+    links:
+      - db
+  web:
+    container_name: reinhardt_web
+    image: nginx:1
+    ports:
+      - "80:80"
+    volumes:
+      - ./docker/conf/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker/conf/vhost.conf:/etc/nginx/sites-enabled/vhost.conf
+      - ./source:/var/www/public
+    links:
+      - php
