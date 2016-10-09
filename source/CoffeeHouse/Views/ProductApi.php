@@ -1,10 +1,10 @@
 <?php
 
-namespace Views;
+namespace CoffeeHouse\Views;
 
 use \Core\Response\JsonResponse as JsonResponse;
 
-class CoffeeView extends \Core\View\View
+class ProductAPI extends \Core\View\View
 {
     public function get()
     {

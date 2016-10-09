@@ -1,6 +1,6 @@
 <?php
 
-namespace Views;
+namespace CoffeeHouse\Views;
 
 use \Core\Response\HttpResponse as HttpResponse;
 

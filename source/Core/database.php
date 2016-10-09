@@ -22,4 +22,19 @@ class Database
     {
         $this->pdo = null;
     }
+
+    public function query(sql_query) {
+
+    }
+
+    public function fetch_class(sql_query, class_name) {
+        // NOTE (Emil): Escape the query before we do anything with it.
+        sql_query = \addslashes(sql_query);
+
+        $statement = $pdo->prepare(sql_query);
+        $statement->setFetchMode(\PDO::FETCH_CLASS, class_name);
+        $statement->execute();
+
+        return $statement->fetch();
+    }
 }

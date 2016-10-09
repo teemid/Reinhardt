@@ -12,9 +12,9 @@ class Application
     function __construct()
     {
         $this->url_config = array();
-        $this->url_config['/^\/$/'] = new \Views\Index;
+        $this->url_config['/^\/$/'] = new \CoffeeHouse\Views\Index;
         $this->url_config['/^api$/'] = array(
-            '/^coffee$/' => new \Views\CoffeeView
+            '/^coffee$/' => new \CoffeeHouse\Views\ProductAPI
         );
     }
 

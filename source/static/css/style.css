@@ -1,5 +1,9 @@
+* {
+    margin: 0;
+}
+
 html, body {
-    min-height: 100%;
+    height: 100%;
     width: 100%;
     margin: 0;
     padding: 0;
@@ -9,20 +13,50 @@ h1 {
     font-family: sans-serif;
 }
 
+.body-wrapper {
+    min-height: 100%;
+    margin-bottom: -1.8rem;
+}
+
+
 header {
+    display: inline-block;
     width: 100%;
-    background-color: grey;
+    background-color: rgb(50, 50, 50);
     padding: 1rem;
     margin: 0;
 }
 
+header > h1, i {
+    color: white;
+}
+
+header > h1 {
+    float: left;
+}
+
+header > i {
+    float:  right;
+}
+
 main {
-    padding: 1rem;
+    background-image: url('/images/coffeebeans.jpg');
+    background-position-y: calc(50% + 5rem);
+    background-size: 100%;
+    padding: 1.5rem;
+}
+
+.product-list {
+    list-style: none;
+}
+
+.product-list > li {
+    display: block;
 }
 
 footer {
     width: 100%;
-    height: 1.5rem;
+    height: 1.8rem;
     position: relative;
     bottom: 0;
     text-align: center;
@@ -34,4 +68,34 @@ footer > p {
     position: relative;
     top: 50%;
     transform: translateY(-50%);
+}
+
+
+.row {
+    display: inline-block;
+    width: 100%;
+}
+
+.columns-12 {
+    width: 100%;
+    display: inline-block;
+    float: left;
+}
+
+.columns-6 {
+    width: calc(100% / 2);
+    display: inline-block;
+    float: left;
+}
+
+.columns-3 {
+    width: calc(100% / 4);
+    display: inline-block;
+    float: left;
+}
+
+.columns-1 {
+    width: calc(100% / 12);
+    display: inline-block;
+    float: left;
 }
