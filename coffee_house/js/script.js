@@ -10,10 +10,34 @@ var CoffeeHouse = (function () {
 
         product.fetch_all();
 
+        function Order() {
+            var self = this;
+        }
+
+        function Cart() {
+            var self = this;
+
+            self.products = document.querySelector('.product-list');
+        }
+
         function Product() {
             var self = this;
-            self.endpoint = '/api/products';
+
+            self.endpoint = '/api/v1/products';
             self.list = document.querySelector('.product-list');
+            self.form = document.querySelector('.product-form');
+
+            self.form.addEventListener('submit', form_listener);
+
+            function form_listener(event) {
+                event.preventDefault();
+
+                var inputs = self.form.querySelectorAll('input');
+
+                for (var i = 0; i < inputs.length; i++) {
+                    console.log(inputs[i].value);
+                }
+            }
 
             function fetch_all() {
                 ajax(self.endpoint)
@@ -43,6 +67,7 @@ var CoffeeHouse = (function () {
                 var listElement = document.createElement('li');
                 var nameNode = document.createElement('p');
                 var priceNode = document.createElement('p');
+                var addToCart = document.createElement('i');
 
                 nameNode.innerHTML = product.name;
                 priceNode.innerHTML = product.price;
