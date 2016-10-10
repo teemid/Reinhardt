@@ -18,7 +18,7 @@ class View
         }
         else
         {
-            return HttpResponse(http_response_code(405));
+            return HttpResponse('Resource not found.');
         }
     }
 

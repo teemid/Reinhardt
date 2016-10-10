@@ -32,5 +32,6 @@ services:
       - ./docker/conf/nginx.conf:/etc/nginx/nginx.conf
       - ./docker/conf/vhost.conf:/etc/nginx/sites-enabled/vhost.conf
       - ./source:/var/www/public
+      - ./coffee_house:/var/www/coffee_house
     links:
       - php

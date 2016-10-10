@@ -2,8 +2,6 @@
 
 namespace Core;
 
-use Core\Response\HttpResponse as HttpResponse;
-
 
 class Application
 {
@@ -34,7 +32,17 @@ class Application
 
         $view = $this->matchUrl($path, $this->url_config);
 
-        return $view ? $view->dispatch($http_request) : HttpResponse('Http404 Not Found');
+        try {
+            if (!$view) {
+                throw new Exceptions\Http404();
+            }
+
+            return $view->dispatch($http_request);
+        } catch (Http404 $e) {
+            \http_response_code(404);
+
+            return '';
+        }
     }
 
     private function matchUrl($url, $url_config)

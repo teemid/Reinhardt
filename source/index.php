@@ -1,7 +1,5 @@
 <?php
 
-// $path = dirname(__FILE__);
-// set_include_path(get_include_path() . PATH_SEPARATOR . $path);
 define(ROOT_DIR, dirname(__FILE__));
 
 spl_autoload_register();
