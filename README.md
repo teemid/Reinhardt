@@ -6,4 +6,4 @@ Requirements: Docker.
 
 Navigate to the folder and run:
 
-    'docker-compose up -d'.
+    docker-compose up -d
