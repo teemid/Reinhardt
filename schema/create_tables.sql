@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS coffee_products
 CREATE TABLE IF NOT EXISTS coffee_orders
 (
     id INT NOT NULL AUTO_INCREMENT,
-    purchased DATETIME NOT NULL,
+    purchased DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     total_price INT NOT NULL,
     PRIMARY KEY (id)
 );
