@@ -23,11 +23,16 @@
                         <form class="product-form" method="POST">
                             <div class="row">
                                 <label for="">Produktnavn:</label>
-                                <input type="text">
+                                <input type="text" name="name">
                             </div>
                             <div class="row">
                                 <label for="">Pris:</label>
-                                <input type="number">
+                                <input type="number" name="price">
+                            </div>
+
+                            <div class="row">
+                                <label for="">Is Extra?</label>
+                                <input type="checkbox" name="is_extra">
                             </div>
 
                             <div class="row">
@@ -42,7 +47,7 @@
             </main>
         </div>
 
-        <footer><p>&copy; Emil Grunt</p></footer>
+        <footer><p>Emil Grunt &copy; 2016</p></footer>
 
         <script src="/js/script.js"></script>
     </body>

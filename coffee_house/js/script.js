@@ -23,7 +23,7 @@ var CoffeeHouse = (function () {
         function Product() {
             var self = this;
 
-            self.endpoint = '/api/v1/products';
+            self.api = ajax('/api/v1/products');
             self.list = document.querySelector('.product-list');
             self.form = document.querySelector('.product-form');
 
@@ -32,15 +32,21 @@ var CoffeeHouse = (function () {
             function form_listener(event) {
                 event.preventDefault();
 
-                var inputs = self.form.querySelectorAll('input');
+                var inputs = Array.prototype.slice.call(self.form.querySelectorAll('input'), 0);
+                var data = {};
 
-                for (var i = 0; i < inputs.length; i++) {
-                    console.log(inputs[i].value);
-                }
+                inputs.forEach(function (input) {
+                    data[input.name] = input.value;
+                });
+
+                self.api
+                    .post(data)
+                    .then(function (data) { console.log(data); })
+                    .catch(function (data) { console.log(data); });
             }
 
             function fetch_all() {
-                ajax(self.endpoint)
+                self.api
                     .get()
                     .then(function (data) {
                         var results = JSON.parse(data);
@@ -50,6 +56,10 @@ var CoffeeHouse = (function () {
                     .catch(function (data) {
                         console.log('Ajax request failed: ', data);
                     });
+            }
+
+            function create(product) {
+                self.api.post()
             }
 
             function add(products) {
@@ -80,18 +90,48 @@ var CoffeeHouse = (function () {
 
             return {
                 fetch_all: fetch_all,
-                add: add,
+                create: create,
                 remove: remove,
             };
         }
 
         function ajax(url) {
-            function make_ajax_request (method, url) {
+            function make_ajax_request (method, url, args) {
                 var promise = new Promise(function (resolve, reject) {
                     var request = new XMLHttpRequest();
+                    var urlEncodedData = '';
+
+                    if (args) {
+                        var properties = Object.keys(args);
+                        var data = [];
+
+                        console.log(args);
+                        console.log(properties);
+
+                        properties.forEach(function (property, index) {
+                            data.push(encodeURIComponent(property) + '=' + encodeURIComponent(args[property]));
+                        });
+
+                        console.log(data);
+
+                        urlEncodedData = data.join('&');
+                    }
 
                     request.open(method, url);
-                    request.send();
+
+                    if (method === 'POST') {
+                        request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                        request.setRequestHeader('Content-Length', urlEncodedData.length);
+
+                        console.log('request: ' + urlEncodedData);
+
+                        request.send(urlEncodedData)
+                    }
+                    else
+                    {
+                        url += '?' + urlEncodedData;
+                        request.send();
+                    }
 
                     request.onload = function () {
                         if (this.status >= 200 && this.status < 300) {
@@ -111,8 +151,8 @@ var CoffeeHouse = (function () {
 
 
             return {
-                get: function () { return make_ajax_request('GET', url); },
-                post: function () { return make_ajax_request('POST', url); }
+                get: function (args) { return make_ajax_request('GET', url, args); },
+                post: function (args) { return make_ajax_request('POST', url, args); }
             };
         }
     }
