@@ -1,5 +1,5 @@
 # Reinhardt
-PHP server exploration inspired by Django
+PHP code exploration inspired by Django
 
 
 Requirements: Docker.
