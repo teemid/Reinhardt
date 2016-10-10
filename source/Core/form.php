@@ -2,26 +2,50 @@
 
 namespace Core;
 
+use Core\Exceptions\ValidationError as ValidationError;
 
-class Form
+
+abstract class Form
 {
-    public function __construct($array, $class_name = null) {
-        foreach($array as $key => $value)
-        {
-            $this->$key = $value;
+    protected $raw_values = array();
 
-            print(gettype($value));
-        }
+    public function __construct($raw_values, $class_name = null) {
+        $this->raw_values = $raw_values;
     }
 
     public function validate() {
         $properties = get_object_vars($this);
 
-        foreach ($properties as $property)
-        {
-            $validation_function = 'validate_' . $property;
+        $key = array_search('raw_values', $properties);
 
-            $this->$validation_function($this->$property);
+        if ($key !== false)
+        {
+            unset($properties[$key]);
+        }
+
+        foreach ($this->required as $property)
+        {
+            print('Property: ' . $property . PHP_EOL);
+
+            if (array_key_exists($property, $this->raw_values))
+            {
+                $validation_function = 'validate_' . $property;
+                $raw_value = $this->raw_values[$property];
+
+                $this->$property = $this->$validation_function($this->raw_values[$property]);
+            }
+            else
+            {
+                throw new ValidationError('Property "' . $property . '" not found.');
+            }
+        }
+    }
+
+    protected function validate_string_length($property, $max_length) {
+        $string = $this->raw_values[$property];
+
+        if (strlen($string) > $max_length) {
+            throw new ValidationError('Property: "' . $property . '" string value exceeds maximum.');
         }
     }
 }

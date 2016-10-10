@@ -4,9 +4,9 @@ namespace CoffeeHouse\Views;
 
 use \Core\Response\JsonResponse as JsonResponse;
 use \Core\View\View as View;
-use \Core\Form as Form;
 
 use \CoffeeHouse\Models\Product as Product;
+use \CoffeeHouse\Forms\ProductForm as ProductForm;
 
 
 class ProductAPI extends View
@@ -17,9 +17,7 @@ class ProductAPI extends View
 
         if ($request['GET'])
         {
-            $params = $request['GET'];
-
-            $result = Product::get(array($params['id']));
+            $result = Product::get($request['GET']);
         }
         else
         {
@@ -31,9 +29,13 @@ class ProductAPI extends View
 
     public function post($request)
     {
-        $form = new Form($request['POST']);
+        print_r($request);
 
-        $form->validate();
+        $form = new ProductForm($request['POST']);
+
+        $object = $form->validate();
+
+        Product::create($object);
 
         return new JsonResponse($request['POST']);
     }
