@@ -26,23 +26,31 @@ var CoffeeHouse = (function () {
             self.api = ajax('/api/v1/products');
             self.list = document.querySelector('.product-list');
             self.form = document.querySelector('.product-form');
+            self.products = {};
 
-            self.form.addEventListener('submit', form_listener);
+            self.form.addEventListener('submit', formListener);
 
-            function form_listener(event) {
+            function formListener(event) {
                 event.preventDefault();
 
                 var inputs = Array.prototype.slice.call(self.form.querySelectorAll('input'), 0);
                 var data = {};
 
                 inputs.forEach(function (input) {
-                    data[input.name] = input.value;
+                    if (input.type == 'checkbox') {
+                        data[input.name] = input.checked;
+                    }
+                    else
+                    {
+                        data[input.name] = input.value;
+                    }
                 });
 
-                self.api
-                    .post(data)
-                    .then(function (data) { console.log(data); })
-                    .catch(function (data) { console.log(data); });
+                create(data);
+            }
+
+            function addButtonListener(event) {
+                console.log(event);
             }
 
             function fetch_all() {
@@ -59,13 +67,25 @@ var CoffeeHouse = (function () {
             }
 
             function create(product) {
-                self.api.post()
+                self.api
+                    .post(product)
+                    .then(function (data) {
+                        add([data]);
+                    })
+                    .catch(function (data) {
+                        console.log(data);
+                    });
             }
 
             function add(products) {
                 for (var i = 0; i < products.length; i++) {
-                    var product = createProduct(products[i]);
-                    self.list.appendChild(product);
+                    var product = products[i];
+
+                    var listElement = createListElement(products[i]);
+                    self.list.appendChild(listElement);
+                    self.products[product.id] = product;
+
+                    console.log(self.products);
                 }
             }
 
@@ -73,17 +93,25 @@ var CoffeeHouse = (function () {
                 console.log('remove product');
             }
 
-            function createProduct(product) {
+            function createListElement(product) {
                 var listElement = document.createElement('li');
                 var nameNode = document.createElement('p');
                 var priceNode = document.createElement('p');
-                var addToCart = document.createElement('i');
+                var addButton = document.createElement('i');
+
+                listElement.className = 'product';
+                addButton.className = 'fa fa-cart-plus';
 
                 nameNode.innerHTML = product.name;
                 priceNode.innerHTML = product.price;
 
+                listElement.dataset.beverageId = product.id;
+
+                addButton.addEventListener('click', addButtonListener);
+
                 listElement.appendChild(nameNode);
                 listElement.appendChild(priceNode);
+                listElement.appendChild(addButton);
 
                 return listElement;
             }
@@ -104,9 +132,6 @@ var CoffeeHouse = (function () {
                     if (args) {
                         var properties = Object.keys(args);
                         var data = [];
-
-                        console.log(args);
-                        console.log(properties);
 
                         properties.forEach(function (property, index) {
                             data.push(encodeURIComponent(property) + '=' + encodeURIComponent(args[property]));
