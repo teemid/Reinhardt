@@ -2,6 +2,8 @@
 
 namespace Core;
 
+use Core\Exceptions\Http404 as Http404;
+
 
 class Application
 {
@@ -12,12 +14,15 @@ class Application
         $this->url_config = array();
         $this->url_config['/^\/$/'] = new \CoffeeHouse\Views\Index;
         $this->url_config['/^api$/'] = array(
-            '/^coffee$/' => new \CoffeeHouse\Views\ProductAPI
+            '/^products$/' => new \CoffeeHouse\Views\ProductAPI,
+            '/^orders$/' => new \CoffeeHouse\Views\OrderAPI
         );
     }
 
-    public function handleRequest($http_request)
+    public function handleRequest()
     {
+        $http_request = $this->formRequest();
+
         $path = array();
 
         if ($http_request['path'] == '/')
@@ -34,15 +39,30 @@ class Application
 
         try {
             if (!$view) {
-                throw new Exceptions\Http404();
+                throw new Http404();
             }
 
-            return $view->dispatch($http_request);
+            $response = $view->dispatch($http_request);
+
+            return $response->getBody();
         } catch (Http404 $e) {
             \http_response_code(404);
 
             return '';
         }
+    }
+
+    private function formRequest() {
+        $http_request = array(
+            'method' => $_SERVER['REQUEST_METHOD'],
+            'path'   => $_SERVER['REQUEST_URI'],
+            'scheme' => $_SERVER['REQUEST_SCHEME'],
+            'GET'    => $_GET,
+            'POST'   => $_POST,
+            'FILES'  => $_FILES,
+        );
+
+        return $http_request;
     }
 
     private function matchUrl($url, $url_config)

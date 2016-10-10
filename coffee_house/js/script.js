@@ -6,43 +6,89 @@ var CoffeeHouse = (function () {
 
         self.elements = {};
         self.elements['items'] = document.querySelector('.product-list');
-        self.items = getItems();
+        self.product = Product();
 
-        addItems(self.items);
+        product.fetch_all();
 
-        function getItems() {
-            return [
-                { name: 'Java', price: 39 },
-                { name: 'Kaffe', price: 29 },
-                { name: 'Espresso', price: 29 },
-            ];
-        }
+        function Product() {
+            var self = this;
+            self.endpoint = '/api/products';
+            self.list = document.querySelector('.product-list');
 
-        function createItem(item) {
-            var listElement = document.createElement('li');
-            var nameNode = document.createElement('p');
-            var priceNode = document.createElement('p');
+            function fetch_all() {
+                ajax(self.endpoint)
+                    .get()
+                    .then(function (data) {
+                        var results = JSON.parse(data);
 
-            nameNode.innerHTML = item.name;
-            priceNode.innerHTML = item.price;
-
-            listElement.appendChild(nameNode);
-            listElement.appendChild(priceNode);
-
-            return listElement;
-        }
-
-        function addItems(items) {
-            for (var i = 0; i < items.length; i++)
-            {
-                var item = createItem(items[i]);
-
-                self.elements.items.appendChild(item);
+                        add(results);
+                    })
+                    .catch(function (data) {
+                        console.log('Ajax request failed: ', data);
+                    });
             }
+
+            function add(products) {
+                for (var i = 0; i < products.length; i++) {
+                    var product = createProduct(products[i]);
+                    self.list.appendChild(product);
+                }
+            }
+
+            function remove(products) {
+                console.log('remove product');
+            }
+
+            function createProduct(product) {
+                var listElement = document.createElement('li');
+                var nameNode = document.createElement('p');
+                var priceNode = document.createElement('p');
+
+                nameNode.innerHTML = product.name;
+                priceNode.innerHTML = product.price;
+
+                listElement.appendChild(nameNode);
+                listElement.appendChild(priceNode);
+
+                return listElement;
+            }
+
+            return {
+                fetch_all: fetch_all,
+                add: add,
+                remove: remove,
+            };
         }
 
-        function removeItems() {
+        function ajax(url) {
+            function make_ajax_request (method, url) {
+                var promise = new Promise(function (resolve, reject) {
+                    var request = new XMLHttpRequest();
 
+                    request.open(method, url);
+                    request.send();
+
+                    request.onload = function () {
+                        if (this.status >= 200 && this.status < 300) {
+                            resolve(this.response);
+                        } else {
+                            reject(this.response);
+                        }
+                    };
+
+                    request.onerror = function () {
+                        reject(this.statusText);
+                    };
+                });
+
+                return promise;
+            }
+
+
+            return {
+                get: function () { return make_ajax_request('GET', url); },
+                post: function () { return make_ajax_request('POST', url); }
+            };
         }
     }
 

@@ -31,6 +31,6 @@ class View
 
     public function __toString()
     {
-        return \get_class($this);
+        return __CLASS__;
     }
 }

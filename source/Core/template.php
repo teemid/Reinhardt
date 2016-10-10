@@ -2,6 +2,7 @@
 
 namespace Core
 
+
 class Template
 {
     private $template_path;

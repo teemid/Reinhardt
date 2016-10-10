@@ -1,10 +1,10 @@
 <?php
 
-namespace Core\Expcetions;
+namespace Core\Exceptions;
 
 class Http404 extends \Exception
 {
-    public function __construct($message, $code = 0, Exception $previous = null)
+    public function __construct($message = '404 Not Found', $code = 0, Exception $previous = null)
     {
         http_response_code(404);
 

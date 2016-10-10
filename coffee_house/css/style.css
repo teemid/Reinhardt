@@ -40,9 +40,6 @@ header > i {
 }
 
 main {
-    background-image: url('/images/coffeebeans.jpg');
-    background-position-y: calc(50% + 5rem);
-    background-size: 100%;
     padding: 1.5rem;
 }
 
