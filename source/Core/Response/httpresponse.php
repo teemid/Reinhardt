@@ -8,13 +8,13 @@ class HttpResponse
 
     public function __construct($body, $content_type='text/html')
     {
+        header('Content-Type: ' . $this->content_type);
+
         $this->body = $body;
     }
 
     public function getBody()
     {
-        header('Content-Type: ' . $this->content_type);
-
         return $this->body;
     }
 }

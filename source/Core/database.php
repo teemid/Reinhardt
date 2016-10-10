@@ -37,13 +37,13 @@ class Database
         return $statement->fetchAll();
     }
 
-    public function fetch_class($sql_query, $class_name) {
+    public function fetch_class($sql_query, $class_name, $arguments = array()) {
         // NOTE (Emil): Escape the query before we do anything with it.
         $sql_query = \addslashes($sql_query);
 
         $statement = $this->pdo->prepare($sql_query);
         $statement->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, $class_name);
-        $statement->execute();
+        $statement->execute($arguments);
 
         return $statement->fetchAll();
     }

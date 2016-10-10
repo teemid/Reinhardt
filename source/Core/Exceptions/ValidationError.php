@@ -3,11 +3,11 @@
 namespace Core\Exceptions;
 
 
-class Http404 extends \Exception
+class ValidationError extends \Exception
 {
-    public function __construct($message = '404 Not Found', $code = 0, Exception $previous = null)
+    public function __construct($message = '400 Bad Request', $code = 0, Exception $previous = null)
     {
-        http_response_code(404);
+        http_response_code(400);
 
         parent::__construct($message, $code, $pervious);
     }

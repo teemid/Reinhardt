@@ -12,10 +12,11 @@ class Application
     function __construct()
     {
         $this->url_config = array();
-        $this->url_config['/^\/$/'] = new \CoffeeHouse\Views\Index;
         $this->url_config['/^api$/'] = array(
-            '/^products$/' => new \CoffeeHouse\Views\ProductAPI,
-            '/^orders$/' => new \CoffeeHouse\Views\OrderAPI
+            '/^v1$/' => array(
+                '/^products$/' => new \CoffeeHouse\Views\ProductAPI,
+                '/^orders$/' => new \CoffeeHouse\Views\OrderAPI
+            )
         );
     }
 
@@ -45,17 +46,24 @@ class Application
             $response = $view->dispatch($http_request);
 
             return $response->getBody();
-        } catch (Http404 $e) {
-            \http_response_code(404);
+        } catch (\Exception $e) {
+            // NOTE (Emil): Not really any thing to do here.
 
-            return '';
+            return $e->getMessage();
         }
     }
 
     private function formRequest() {
+        $path = $_SERVER['REQUEST_URI'];
+
+        $result = explode('?', $path);
+        $resource = $result[0];
+        $query = $result[1];
+
         $http_request = array(
             'method' => $_SERVER['REQUEST_METHOD'],
-            'path'   => $_SERVER['REQUEST_URI'],
+            'query' => $query,
+            'path'   => $resource,
             'scheme' => $_SERVER['REQUEST_SCHEME'],
             'GET'    => $_GET,
             'POST'   => $_POST,

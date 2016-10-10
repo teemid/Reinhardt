@@ -2,18 +2,39 @@
 
 namespace CoffeeHouse\Views;
 
-use \Core\Database as Database;
 use \Core\Response\JsonResponse as JsonResponse;
 use \Core\View\View as View;
+use \Core\Form as Form;
+
+use \CoffeeHouse\Models\Product as Product;
+
 
 class ProductAPI extends View
 {
-    public function get($request)
+    public function get($request, $id = null)
     {
-        $db = new Database();
+        $result = array();
 
-        $result = $db->fetch_class("SELECT * FROM coffee_products;", __CLASS__);
+        if ($request['GET'])
+        {
+            $params = $request['GET'];
+
+            $result = Product::get(array($params['id']));
+        }
+        else
+        {
+            $result = Product::all();
+        }
 
         return new JsonResponse($result);
+    }
+
+    public function post($request)
+    {
+        $form = new Form($request['POST']);
+
+        $form->validate();
+
+        return new JsonResponse($request['POST']);
     }
 }
