@@ -3,15 +3,36 @@ var CoffeeHouse = CoffeeHouse || {};
 var CoffeeHouse = (function (CoffeeHouse) {
     function CoffeeHouse() {
         var self = this;
-        self.products = new CoffeeHouse.List('/api/v1/products', '.products-list', '.products-form');
-        self.extras = new CoffeeHouse.List('/api/v1/extras', '.extras-list', '.extras-form');
+
+        self.products = new CoffeeHouse.List({
+            url: '/api/v1/products',
+            list: '.products-list',
+            form: '.products-form',
+            createElement: createProduct,
+            removeButton: '.products-remove',
+        });
+        self.extras = new CoffeeHouse.List({
+            url: '/api/v1/extras',
+            list: '.extras-list',
+            form: '.extras-form',
+            createElement: createProduct,
+            removeButton: '.extras-remove',
+        });
         self.orders = new CoffeeHouse.Order('/api/v1/orders');
 
-        self.products.initialize(createProduct);
-        self.extras.initialize(createExtra);
+        self.products.initialize();
+        self.extras.initialize();
     }
 
-    var event = new CustomEvent('order_add', { 'detail', })
+    var event = new CustomEvent('order_add', { 'detail': {} });
+
+    function addProductListener(event) {
+        var productElement = event.target.parentElement;
+        var id = productElement.dataset.productId;
+        var product = products.get(id);
+
+        orders.add(product);
+    }
 
     function createProduct(product) {
         var listElement = document.createElement('li');

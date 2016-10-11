@@ -4,31 +4,38 @@ var CoffeeHouse = CoffeeHouse || {};
     function Order(url, order_list_query, order_total_query) {
         var self = this;
 
-
         var order = new Proxy({ total: 0 }, {
-            set: function (target, property, value) {
-
-            },
-            deleteProperty: function (target, property) {
-
-            }
+            set: CoffeeHouse.Core.log,
+            deleteProperty: CoffeeHouse.Core.log,
         });
         var api = CoffeeHouse.Core.Ajax(url);
         var UI = {
             list: document.querySelector(order_list_query),
             total: document.querySelector(order_total_query),
-            set: SetHandler,
         };
 
         function add(product) {
+            // NOTE (Emil): If the product is already in the order, increment the quantity.
             if (product.id in order) {
                 order[product.id].quantity += 1;
             }
-            else {
+            else { // Else add the product with an initial quantity of 1.
                 order[product.id] = { product: product, quantity: 1 };
             }
 
-            updateTotal(order);
+            updateTotal(order, product);
+        }
+
+        function remove(product) {
+            var item = order[product.id];
+
+            if (!item) { return; } // NOTE (Emil): We don't have an item, so do nothing.
+
+            item.quantity -= 1;
+
+            if (item.quantity == 0) {
+                delete order[product.id];
+            }
         }
 
         function updateTotal(order, product) {
@@ -52,16 +59,13 @@ var CoffeeHouse = CoffeeHouse || {};
             orderItem.appendChild(orderPrice);
             orderItem.appendChild(removeButton);
 
-            UI.list.appendChild(orderItem);
-        }
-
-        function SetHandler(obj, property, value) {
-            console.log(obj, property, value);
+            return orderItem;
         }
 
         return {
-            add: add
-        }
+            add: add,
+            remove: remove,
+        };
     }
 
     CoffeeHouse.Order = Order;

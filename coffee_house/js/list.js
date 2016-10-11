@@ -1,35 +1,48 @@
 var CoffeeHouse = CoffeeHouse || {};
 
+
 (function (CoffeeHouse) {
-    function List(url, list_query, form_query) {
+    function List(url, list_query, createFunc, options) {
         var self = this;
 
         var list = new Proxy({}, {
             set: function (target, property, data) { var element = createElement(data); UI.list.appendChild(element); },
             deleteProperty: function (target, data) { remove(data); }
         });
-        var api = CoffeeHouse.Core.Ajax(url);
+        var api = CoffeeHouse.Core.Required;
         var actions = {
             get: get,
             create: create,
             remove: remove,
         };
         var UI = {
-            list: document.querySelector(list_query),
-            form: document.querySelector(form_query),
+            list: null,
+            form: null,
             listeners: {
                 form: formListener,
+                remove: removeElementListener,
             }
         };
 
         var createElement = CoffeeHouse.Core.notImplemented;
 
-        function initialize(createFunction) {
-            createElement = createFunction;
+        construct(url, list_query, createFunc, options);
 
-            UI.form.addEventListener('submit', UI.listeners.formListener);
+        function construct(url, list_query, createFunc, options) {
+            var config = options || url;
 
-            get();
+            api = CoffeeHouse.Core.Ajax(config['url'] || url);
+            UI.list = document.querySelector(config['list'] || list_query);
+            UI.form = document.querySelector(config['form']);
+            createElement = config['createElement'] || createFunc;
+
+            if (UI.form) {
+                UI.form.addEventListener('submit', UI.listeners.form);
+            }
+        }
+
+        function initialize() {
+            get(); // NOTE (Emil): Populate the list with any existing data.
         }
 
         function get() {
@@ -63,6 +76,10 @@ var CoffeeHouse = CoffeeHouse || {};
             create(data);
         }
 
+        function removeElementListener(event) {
+
+        }
+
         function addElement(data) {
             var objects = JSON.parse(data);
 
@@ -71,12 +88,17 @@ var CoffeeHouse = CoffeeHouse || {};
             });
         }
 
+        function getElement(identifier) {
+            return list[identifier];
+        }
+
         function removeElement(property) {
             delete list[property];
         }
 
         return {
             initialize: initialize,
+            get: getElement,
         }
     }
 
