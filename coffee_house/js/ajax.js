@@ -51,20 +51,26 @@ var CoffeeHouse = CoffeeHouse || {};
 
         return {
             get: function (args) {
+                var encoded_url = url;
+
                 if (args) {
-                    url = '?' + urlEncode(args);
+                    encoded_url = [encoded_url, '?', urlEncode(args)].join('');
                 }
 
-                return makeAjaxRequest('GET', url, args);
+                return makeAjaxRequest('GET', encoded_url, args);
             },
             post: function (args) {
                 var content = serializeToJson(args);
                 return makeAjaxRequest('POST', url, { content: content });
             },
             delete: function (args) {
-                url += '?' + urlEncode(args);
+                var encoded_url = url;
 
-                return makeAjaxRequest('DELETE', url, args);
+                if (args) {
+                    encoded_url = [encoded_url, '?', urlEncode(args)].join('');
+                }
+
+                return makeAjaxRequest('DELETE', encoded_url, args);
             }
         };
     }
