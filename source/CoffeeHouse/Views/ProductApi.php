@@ -3,7 +3,7 @@
 namespace CoffeeHouse\Views;
 
 use \Core\Response\JsonResponse as JsonResponse;
-use \Core\View\View as View;
+use \Core\View as View;
 
 use \CoffeeHouse\Models\Product as Product;
 use \CoffeeHouse\Forms\ProductForm as ProductForm;

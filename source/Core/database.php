@@ -33,20 +33,22 @@ class Database
 
     public function query($sql_query, $class_name, $arguments = array()) {
         $statement = self::$pdo->prepare($sql_query);
-
-        // $statement = $this->bind_parameters($statement, $arguments);
-
+        $statement = $this->bind_parameters($statement, $arguments);
         $statement->execute($arguments);
-
-        // return $statement->fetchAll();
     }
 
     public function fetch_class($sql_query, $class_name, $arguments = array()) {
-        $err = $statement = self::$pdo->prepare($sql_query);
+        $statement = self::$pdo->prepare($sql_query);
         $statement->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, $class_name);
-
         $statement = $this->bind_parameters($statement, $arguments);
+        $statement->execute();
 
+        return $statement->fetchAll();
+    }
+
+    public function fetch($sql_query, $arguments = array()) {
+        $statement = self::$pdo->prepare($sql_query);
+        $statement = $this->bind_parameters($statement, $arguments);
         $statement->execute();
 
         return $statement->fetchAll();

@@ -2,6 +2,7 @@
 
 namespace Core\Response;
 
+
 class JsonResponse extends HttpResponse
 {
     public function __construct($json)

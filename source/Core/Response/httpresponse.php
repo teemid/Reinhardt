@@ -2,6 +2,7 @@
 
 namespace Core\Response;
 
+
 class HttpResponse
 {
     public $content_type = 'text/html';

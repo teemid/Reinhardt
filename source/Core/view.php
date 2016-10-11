@@ -1,14 +1,12 @@
 <?php
 
-namespace Core\View;
+namespace Core;
 
-class JsonView
+use \Core\Response\HttpResponse as HttpResponse;
+
+class View
 {
     private $context;
-
-    public function __construct()
-    {
-    }
 
     public function dispatch($http_request)
     {
@@ -18,6 +16,10 @@ class JsonView
         {
             return $this->$method($http_request);
         }
+        else
+        {
+            return HttpResponse('Resource not found.');
+        }
     }
 
     public function render($template_name, $context)
@@ -25,5 +27,10 @@ class JsonView
         ob_start();
         require($template_name);
         return ob_get_clean();
+    }
+
+    public function __toString()
+    {
+        return __CLASS__;
     }
 }

@@ -27,7 +27,6 @@ abstract class Form
 
         foreach ($this->requirements as $property => $requirements)
         {
-
             try {
                 if (array_key_exists($property, $this->raw_values))
                 {
@@ -50,7 +49,6 @@ abstract class Form
             } catch (ValidationError $e) {
                 $this->errors[$property] = $e->getMessage();
             }
-
         }
 
         return $cleaned_data;
@@ -96,11 +94,11 @@ abstract class Form
 
         if ($value === 'true')
         {
-            return True;
+            return 1;
         }
         elseif ($value === 'false')
         {
-            return False;
+            return 0;
         } else
         {
             throw new ValidationError('Property ' . $property . ' is not a boolean value.');
