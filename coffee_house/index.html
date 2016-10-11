@@ -13,35 +13,66 @@
             <header>
                 <h1>Kaffebar</h1>
                 <i class="fa fa-2x fa-shopping-cart"></i>
+                <div class="order-wrapper">
+                    <li class="order-list"></li>
+                    <div class="order-total"></div>
+                </div>
             </header>
 
             <main>
                 <div class="row">
                     <div class="columns-6">
-                        <ul class="product-list"></ul>
+                        <div class="row">
+                            <ul class="products-list"></ul>
+                        </div>
+                        <div class="row">
+                            <form class="products-form" method="POST">
+                                <div class="row">
+                                    <label for="">Produktnavn:</label>
+                                    <input type="text" name="name">
+                                </div>
+                                <div class="row">
+                                    <label for="">Pris:</label>
+                                    <input type="number" name="price">
+                                </div>
 
-                        <form class="product-form" method="POST">
-                            <div class="row">
-                                <label for="">Produktnavn:</label>
-                                <input type="text" name="name">
-                            </div>
-                            <div class="row">
-                                <label for="">Pris:</label>
-                                <input type="number" name="price">
-                            </div>
+                                <div class="row">
+                                    <label for="">Doubleable?</label>
+                                    <input type="checkbox" name="doubleable">
+                                </div>
 
-                            <div class="row">
-                                <label for="">Doubleable?</label>
-                                <input type="checkbox" name="doubleable">
-                            </div>
-
-                            <div class="row">
-                                <button type="submit">Legg til</button>
-                            </div>
-                        </form>
+                                <div class="row">
+                                    <button type="submit">Legg til ny drikke</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                     <div class="columns-6">
+                        <div class="row">
+                            <ul class="extras-list"></ul>
+                        </div>
 
+                        <div class="row">
+                            <form class="extras-form" method="POST">
+                                <div class="row">
+                                    <div class="column-12">
+                                        <div class="row">
+                                            <label for="">Navn: </label>
+                                            <input type="text" name="name">
+                                        </div>
+
+                                        <div class="row">
+                                            <label for="">Pris:</label>
+                                            <input type="number" name="price">
+                                        </div>
+
+                                        <div class="row">
+                                            <button type="submit">Legg til ny extra</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </main>
@@ -49,6 +80,10 @@
 
         <footer><p>Emil Grunt &copy; 2016</p></footer>
 
+        <script src="/js/coffee_house.js"></script>
+        <script src="/js/extra.js"></script>
+        <script src="/js/order.js"></script>
+        <script src="/js/product.js"></script>
         <script src="/js/script.js"></script>
     </body>
 </html>

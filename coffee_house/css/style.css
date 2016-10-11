@@ -21,6 +21,7 @@ h1 {
 
 header {
     display: inline-block;
+    box-sizing: border-box;
     width: 100%;
     background-color: rgb(50, 50, 50);
     padding: 1rem;
@@ -34,6 +35,8 @@ header > h1 {
 
 header > i {
     float:  right;
+    margin: 0 1rem;
+    cursor: pointer;
 }
 
 main {
