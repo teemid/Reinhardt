@@ -11,6 +11,22 @@ use \CoffeeHouse\Forms\ExtraForm as ExtraForm;
 
 class ExtraAPI extends View
 {
+    public function delete($request) {
+        $query = $request['query_params'];
+
+        if (array_key_exists('id', $query)) {
+            $arguments = array('id' => intval($query['id']));
+
+            $instance = Extra::delete($arguments);
+
+            return new JsonResponse($instance);
+        }
+        else
+        {
+            return new JsonResponse('Bad request', 400);
+        }
+    }
+
     public function get($request, $id = null)
     {
         $result = array();
@@ -25,12 +41,6 @@ class ExtraAPI extends View
         }
 
         return new JsonResponse($result);
-    }
-
-    public function delete($request) {
-        $result = Extra::delete($request['query_params']);
-
-        return new JsonResponse('Successfully deleted ' . $request['query_params']);
     }
 
     public function post($request)

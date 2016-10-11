@@ -11,6 +11,22 @@ use \CoffeeHouse\Forms\ProductForm as ProductForm;
 
 class ProductAPI extends View
 {
+    public function delete($request) {
+        $query = $request['query_params'];
+
+        if (array_key_exists('id', $query)) {
+            $arguments = array('id' => intval($query['id']));
+
+            $instance = Product::delete($arguments);
+
+            return new JsonResponse($instance);
+        }
+        else
+        {
+            return new JsonResponse('Bad request', 400);
+        }
+    }
+
     public function get($request)
     {
         $result = array();
@@ -35,7 +51,7 @@ class ProductAPI extends View
         if ($form->is_valid()) {
             $id = Product::create($form->cleaned_data);
 
-            $created_object = Product::get(array($id));
+            $created_object = Product::get(array('id' => $id));
 
             $result = new JsonResponse($created_object);
         }
@@ -45,9 +61,5 @@ class ProductAPI extends View
         }
 
         return $result;
-    }
-
-    public function delete($request) {
-        return new JsonResponse('Successfully deleted ' . $request['query_params']);
     }
 }

@@ -31,14 +31,19 @@ class Database
         self::$pdo = null;
     }
 
+    public function exec($statement) {
+        return self::$pdo->exec($statement);
+    }
+
     public function lastInsertedId($name = null) {
         return self::$pdo->lastInsertId($name);
     }
 
-    public function query($sql_query, $class_name, $arguments = array()) {
+    public function query($sql_query, $arguments = array()) {
         $statement = self::$pdo->prepare($sql_query);
         $statement = $this->bind_parameters($statement, $arguments);
-        $statement->execute($arguments);
+
+        return $statement->execute();
     }
 
     public function fetch_class($sql_query, $class_name, $arguments = array()) {
@@ -63,7 +68,7 @@ class Database
         {
             $new_key = ':' . $key;
 
-            $statement->bindParam($new_key, $value);
+            $statement->bindValue($new_key, $value);
         }
 
         return $statement;

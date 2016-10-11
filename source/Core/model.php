@@ -35,16 +35,19 @@ abstract class Model
     public static function create($values) {
         $db = new Database();
 
-        $db->query(static::$sql_create, get_called_class(), $values);
+        $db->query(static::$sql_create, $values);
 
-        $id = $db->lastInsertedId();
-
-        return $id;
+        return $db->lastInsertedId();
     }
 
     public static function delete($args) {
         $db = new Database();
 
-        $db->query(static::$sql_delete, $args);
+        $instance = $db->fetch_class(static::$sql_select_by_id, get_called_class(), $args);
+        $instance = $instance[0];
+
+        $result = $db->query(static::$sql_delete, array('id' => $instance->id));
+
+        return $instance;
     }
 }
