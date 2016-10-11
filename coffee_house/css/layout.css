@@ -77,6 +77,33 @@
     width: 10%;
 }
 
+.order-list {
+    width: 50%;
+}
+
+.order-line {
+    padding: 1rem;
+}
+
+.order-line-name,
+.order-line-quantity,
+.order-line-total {
+    float: left;
+}
+
+.order-line-remove-button {
+    float: right;
+}
+
+.order-line-name {
+    width: 35%;
+}
+
+.order-line-quantity,
+.order-line-total {
+    width: 25%;
+}
+
 .form {
 
 }

@@ -54,6 +54,24 @@
     cursor: pointer;
 }
 
+.order-list {
+    list-style: none;
+}
+
+.order-line-name {
+    font-weight: bold;
+}
+
+.order-line-quantity:before {
+    content: 'x';
+    font-size: 0.8rem;
+}
+
+.order-line-quantity {
+    font-size: 1.2rem;
+    text-anchor: middle;
+}
+
 .footer {
     background-color: #222;
 }
