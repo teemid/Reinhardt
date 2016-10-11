@@ -7,19 +7,13 @@ var CoffeeHouse = CoffeeHouse || {};
 
         var list = new Proxy({}, {
             set: function (target, property, data) {
-                var element = createElement(data);
-                element.dataset.listId = data[identifier];
+                addElement(data);
 
-                if (self.removeButtonQuery) {
-                    var removeButton = element.querySelector(self.removeButtonQuery);
-                    removeButton.addEventListener('click', UI.listeners.remove);
-                }
-
-                UI.list.appendChild(element);
                 target[property] = data;
             },
-            deleteProperty: function (target, propery) {
-                remove(property);
+            deleteProperty: function (target, property) {
+                removeElement(target[property]);
+
                 delete target[property];
             }
         });
@@ -75,21 +69,36 @@ var CoffeeHouse = CoffeeHouse || {};
         function get(data) {
             return api
                 .get()
-                .then(addElement)
+                .then(function (data) {
+                    var items = JSON.parse(data);
+
+                    items.forEach(function (item) {
+                        list[item[identifier]] = item;
+                    });
+                })
                 .catch(CoffeeHouse.Core.log);
         }
 
         function create(data) {
             return api
                 .post(data)
-                .then(addElement)
+                .then((data) => {
+                    var items = JSON.parse(data);
+                    var item = items[0];
+
+                    list[item[identifier]] = item;
+                })
                 .catch(CoffeeHouse.Core.log);
         }
 
         function remove(data) {
             return api
                 .delete(data)
-                .then(removeElement)
+                .then((data) => {
+                    var item = JSON.parse(data);
+
+                    delete list[item[identifier]];
+                })
                 .catch(CoffeeHouse.Core.log);
         }
 
@@ -117,27 +126,29 @@ var CoffeeHouse = CoffeeHouse || {};
             var target = event.target.parentNode;
             var id = target.dataset.listId;
 
-            remove({ id: id }).then(removeElement)
-                .catch(CoffeeHouse.Core.log);
+            remove({ id: id });
         }
 
         function addElement(data) {
-            var objects = JSON.parse(data);
+            var element = createElement(data);
+            element.dataset.listId = data[identifier];
 
-            objects.forEach(function (dataElement) {
-                list[dataElement.id] = dataElement;
-            });
+            if (self.removeButtonQuery) {
+                var removeButton = element.querySelector(self.removeButtonQuery);
+                removeButton.addEventListener('click', UI.listeners.remove);
+            }
+
+            UI.list.appendChild(element);
         }
 
         function getElement(identifier) {
-            console.log(identifier);
-            console.log(list);
-
             return list[identifier];
         }
 
-        function removeElement(property) {
-            delete list[property];
+        function removeElement(item) {
+            var element = UI.list.querySelector('[data-list-id="' + item[identifier] + '"]');
+
+            UI.list.removeChild(element);
         }
 
         return {

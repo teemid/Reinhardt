@@ -6,7 +6,12 @@ var CoffeeHouse = CoffeeHouse || {};
 
         var order = new Proxy({ total: 0 }, {
             set: function (target, property, value) {
+                if (value.product) {
+                    var product = value.product;
+                    var orderLineElement = UI.list.querySelector(['[data-order-line-id="' + product.id +'"']);
 
+                    orderLineElement ? updateOrderLine(orderLineElement, product.price, product.quantity) : addElement(value);
+                }
 
                 target[property] = value;
             },
@@ -22,6 +27,10 @@ var CoffeeHouse = CoffeeHouse || {};
                 remove: CoffeeHouse.Core.log
             }
         };
+
+        function construct() {
+
+        }
 
         function add(product) {
             // NOTE (Emil): If the product is already in the order, increment the quantity.
@@ -47,37 +56,50 @@ var CoffeeHouse = CoffeeHouse || {};
             }
         }
 
-        function addElement() {
+        function addElement(orderLine) {
+            var element = createOrderItem(orderLine);
+            element.dataset.orderLineId = orderLine.product.id;
+            UI.list.appendChild(element);
+        }
+
+        function removeElement(product) {
 
         }
 
-        function updateTotal(order, product) {
-            order.total += product.price;
+        function updateOrderLine(element, price, quantity) {
+            price = parseInt(price);
+            quantity = parseInt(quantity);
+
+            console.log(price, quantity);
+            var orderLineQuantity = element.querySelector('order-line-quantity');
+            var orderLineTotal = element.querySelector('order-line-total');
+
+            orderLineQuantity.innerHTML = quantity;
+            orderLineTotal.innerHTML = price * quantity;
+
+            updateTotal(price);
         }
 
-        function createOrderItem(product) {
-            var orderItem = CoffeeHouse.DOM.createElement('li', {
-                class: 'list-item order-item',
-            });
-            var orderName = CoffeeHouse.DOM.createParagraph('order-name', product.name);
-            var orderPrice = CoffeeHouse.DOM.createParagraph('order-price', product)
-            var orderItem = document.createElement('li');
-            var orderName = document.createElement('p');
-            var orderPrice = document.createElement('p');
-            var removeButton = document.createElement('i');
+        function updateTotal(price) {
+            console.log(price);
+            order.total += price;
 
-            orderItem.dataset.productId = product.id;
+            UI.total.innerHTML = order.total;
+        }
 
-            removeButton.className = 'fa fa-times';
-            orderItem.className = 'order-item';
+        function createOrderItem(orderLine) {
+            var quantity = orderLine.quantity;
+            var product = orderLine.product;
 
-            orderName.innerHtml = product.name;
+            var orderLineElement = CoffeeHouse.DOM.createElement('li', { class: 'list-item order-line' });
+            var name             = CoffeeHouse.DOM.createParagraph('order-line-name', product.name);
+            var quantity         = CoffeeHouse.DOM.createParagraph('order-line-quantity', quantity);
+            var total            = CoffeeHouse.DOM.createParagraph('order-line-total', product.price);
+            var removeButton     = CoffeeHouse.DOM.createElement('i', { class: 'order-line-remove-button fa fa-times' });
 
-            orderItem.appendChild(orderName);
-            orderItem.appendChild(orderPrice);
-            orderItem.appendChild(removeButton);
+            CoffeeHouse.DOM.append(orderLineElement, [name, quantity, total, removeButton]);
 
-            return orderItem;
+            return orderLineElement;
         }
 
         return {

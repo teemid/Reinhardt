@@ -18,7 +18,11 @@ var CoffeeHouse = (function (CoffeeHouse) {
             createElement: createExtra,
             removeButton: '.extra-remove-button',
         });
-        self.orders = new CoffeeHouse.Order('/api/v1/orders');
+        self.orders = new CoffeeHouse.Order(
+            '/api/v1/orders',
+            '.order-list',
+            '.order-total'
+        );
 
         self.products.initialize();
         self.extras.initialize();
@@ -28,8 +32,8 @@ var CoffeeHouse = (function (CoffeeHouse) {
 
     function addProductListener(event) {
         var productElement = event.target.parentElement;
-        var id = productElement.dataset.productId;
-        var product = products.get(String(id));
+        var id = productElement.dataset.listId;
+        var product = products.get(id);
 
         orders.add(product);
     }
