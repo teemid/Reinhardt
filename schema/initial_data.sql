@@ -1,7 +1,7 @@
 use coffee_house;
 
 INSERT INTO coffee_products (name, price, doubleable) VALUES
-    ('Kaffe', 29, DEFAULT), ('Espresso', 39, 1), ('Java', 35, DEFAULT);
+    ('Coffee', 29, DEFAULT), ('Espresso', 39, 1), ('Java', 35, DEFAULT);
 
 INSERT INTO coffee_extras (name, price) VALUES
-    ('Sugerør', DEFAULT), ('Is', DEFAULT), ('Melk', 5), ('Sukker', 5), ('Sjokostrø', 5);
+    ('Straw', DEFAULT), ('Ice', DEFAULT), ('Milk', 5), ('Sugar', 5), ('Chocolate sprinkles', 5);
