@@ -3,71 +3,63 @@ var CoffeeHouse = CoffeeHouse || {};
 var CoffeeHouse = (function (CoffeeHouse) {
     function CoffeeHouse() {
         var self = this;
-        self.products = new CoffeeHouse.Product('/api/v1/products', '.products-list', '.products-form');
-        self.extras = new CoffeeHouse.Extra('/api/v1/extras', '.extras-list', '.extras-form');
+        self.products = new CoffeeHouse.List('/api/v1/products', '.products-list', '.products-form');
+        self.extras = new CoffeeHouse.List('/api/v1/extras', '.extras-list', '.extras-form');
         self.orders = new CoffeeHouse.Order('/api/v1/orders');
+
+        self.products.initialize(createProduct);
+        self.extras.initialize(createExtra);
     }
 
-    CoffeeHouse.Core = {
-        log: function () {
-            for (var i = 0; i < arguments.length; i++) {
-                console.log(arguments[i]);
-            }
-        },
-        Ajax: function (url) {
-            function makeAjaxRequest(method, url, args) {
-                var promise = new Promise(function (resolve, reject) {
-                    var request = new XMLHttpRequest();
-                    var urlEncodedData = '';
+    var event = new CustomEvent('order_add', { 'detail', })
 
-                    if (args) {
-                        var properties = Object.keys(args);
-                        var data = [];
+    function createProduct(product) {
+        var listElement = document.createElement('li');
+        var nameNode = document.createElement('p');
+        var priceNode = document.createElement('p');
+        var addButton = document.createElement('i');
+        var removeButton = document.createElement('i');
 
-                        properties.forEach(function (property, index) {
-                            data.push(encodeURIComponent(property) + '=' + encodeURIComponent(args[property]));
-                        });
+        listElement.className = 'product';
+        addButton.className = 'fa fa-cart-plus';
+        removeButton.className = 'fa fa-times';
 
-                        urlEncodedData = data.join('&');
-                    }
+        nameNode.innerHTML = product.name;
+        priceNode.innerHTML = product.price;
 
-                    request.open(method, url);
+        listElement.dataset.productId = product.id;
 
-                    if (method === 'POST') {
-                        request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-                        request.setRequestHeader('Content-Length', urlEncodedData.length);
+        listElement.appendChild(nameNode);
+        listElement.appendChild(priceNode);
+        listElement.appendChild(addButton);
+        listElement.appendChild(removeButton);
 
-                        request.send(urlEncodedData)
-                    }
-                    else
-                    {
-                        url += '?' + urlEncodedData;
-                        request.send();
-                    }
+        return listElement;
+    }
 
-                    request.onload = function () {
-                        if (this.status >= 200 && this.status < 300) {
-                            resolve(this.response);
-                        } else {
-                            reject(this.response);
-                        }
-                    };
+    function createExtra(extra) {
+        var listElement = document.createElement('li');
+        var nameNode = document.createElement('p');
+        var priceNode = document.createElement('p');
+        var addButton = document.createElement('i');
+        var removeButton = document.createElement('i');
 
-                    request.onerror = function () {
-                        reject(this.statusText);
-                    };
-                });
+        listElement.className = 'product';
+        addButton.className = 'fa fa-cart-plus';
+        removeButton.className = 'fa fa-times';
 
-                return promise;
-            }
+        nameNode.innerHTML = extra.name;
+        priceNode.innerHTML = extra.price;
 
-            return {
-                get: function (args) { return makeAjaxRequest('GET', url, args); },
-                post: function (args) { return makeAjaxRequest('POST', url, args); },
-                delete: function (args) { return makeAjaxRequest('DELETE', url, args); }
-            };
-        }
-    };
+        listElement.dataset.extraId = extra.id;
+
+        listElement.appendChild(nameNode);
+        listElement.appendChild(priceNode);
+        listElement.appendChild(addButton);
+        listElement.appendChild(removeButton);
+
+        return listElement;
+    }
 
     return CoffeeHouse;
 })(CoffeeHouse);
