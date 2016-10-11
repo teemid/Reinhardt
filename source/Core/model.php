@@ -34,9 +34,6 @@ abstract class Model
     public static function create($values) {
         $db = new Database();
 
-        $variables = get_class_vars(__CLASS__);
-        print_r($variables);
-
-        return $db->query(static::$sql_create, get_called_class());
+        return $db->query(static::$sql_create, get_called_class(), $values);
     }
 }

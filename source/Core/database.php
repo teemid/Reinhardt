@@ -31,27 +31,38 @@ class Database
         self::$pdo = null;
     }
 
-    public function query($sql_query) {
-        $sql_query = \addslashes($sql_query);
-
+    public function query($sql_query, $class_name, $arguments = array()) {
         $statement = self::$pdo->prepare($sql_query);
-        $statement->execute();
 
-        return $statement->fetchAll();
+        // $statement = $this->bind_parameters($statement, $arguments);
+
+        $statement->execute($arguments);
+
+        // return $statement->fetchAll();
     }
 
     public function fetch_class($sql_query, $class_name, $arguments = array()) {
         $err = $statement = self::$pdo->prepare($sql_query);
         $statement->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, $class_name);
 
-        foreach ($arguments as $key => $value)
-        {
-            $string = \addslashes($value);
-            $statement->bindParam(':' . $key, $value);
-        }
+        $statement = $this->bind_parameters($statement, $arguments);
 
-        $statement->execute($arguments);
+        $statement->execute();
 
         return $statement->fetchAll();
+    }
+
+    private function bind_parameters($statement, $arguments) {
+        foreach ($arguments as $key => $value)
+        {
+            $new_key = ':' . $key;
+
+            print($new_key);
+            print($value);
+
+            $statement->bindParam($new_key, $value);
+        }
+
+        return $statement;
     }
 }

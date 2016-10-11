@@ -14,8 +14,9 @@ class Application
         $this->url_config = array();
         $this->url_config['/^api$/'] = array(
             '/^v1$/' => array(
+                '/^extras$/' => new \CoffeeHouse\Views\ExtraAPI,
+                '/^orders$/' => new \CoffeeHouse\Views\OrderAPI,
                 '/^products$/' => new \CoffeeHouse\Views\ProductAPI,
-                '/^orders$/' => new \CoffeeHouse\Views\OrderAPI
             )
         );
     }
@@ -38,16 +39,25 @@ class Application
 
         $view = $this->matchUrl($path, $this->url_config);
 
-        try {
-            if (!$view) {
+        try
+        {
+            if (!$view)
+            {
                 throw new Http404();
             }
 
             $response = $view->dispatch($http_request);
 
             return $response->getBody();
-        } catch (\Exception $e) {
-            // NOTE (Emil): Not really any thing to do here.
+        }
+        catch (Http404 $e)
+        {
+            return $e->getMessage();
+        }
+        catch (\Exception $e)
+        {
+            // NOTE (Emil): Not catching a random exception is a server error.
+            http_response_code(500);
 
             return $e->getMessage();
         }

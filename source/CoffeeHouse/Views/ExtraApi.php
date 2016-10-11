@@ -5,11 +5,11 @@ namespace CoffeeHouse\Views;
 use \Core\Response\JsonResponse as JsonResponse;
 use \Core\View\View as View;
 
-use \CoffeeHouse\Models\Product as Product;
-use \CoffeeHouse\Forms\ProductForm as ProductForm;
+use \CoffeeHouse\Models\Extra as Extra;
+use \CoffeeHouse\Forms\ExtraForm as ExtraForm;
 
 
-class ProductAPI extends View
+class ExtraAPI extends View
 {
     public function get($request, $id = null)
     {
@@ -17,11 +17,11 @@ class ProductAPI extends View
 
         if ($request['GET'])
         {
-            $result = Product::get($request['GET']);
+            $result = Extra::get($request['GET']);
         }
         else
         {
-            $result = Product::all();
+            $result = Extra::all();
         }
 
         return new JsonResponse($result);
@@ -29,11 +29,11 @@ class ProductAPI extends View
 
     public function post($request)
     {
-        $form = new ProductForm($request['POST']);
+        $form = new ExtraForm($request['POST']);
         $result = null;
 
         if ($form->is_valid()) {
-            $created_object = Product::create($form->cleaned_data);
+            $created_object = Extra::create($form->cleaned_data);
             $result = new JsonResponse($created_object);
         }
         else
@@ -42,9 +42,5 @@ class ProductAPI extends View
         }
 
         return $result;
-    }
-
-    public function delete($request) {
-        return new JsonResponse(array('Successfully deleted ' . $request['GET']['id']));
     }
 }
