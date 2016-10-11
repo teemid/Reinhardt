@@ -31,6 +31,10 @@ class Database
         self::$pdo = null;
     }
 
+    public function lastInsertedId($name = null) {
+        return self::$pdo->lastInsertId($name);
+    }
+
     public function query($sql_query, $class_name, $arguments = array()) {
         $statement = self::$pdo->prepare($sql_query);
         $statement = $this->bind_parameters($statement, $arguments);
@@ -58,9 +62,6 @@ class Database
         foreach ($arguments as $key => $value)
         {
             $new_key = ':' . $key;
-
-            print($new_key);
-            print($value);
 
             $statement->bindParam($new_key, $value);
         }

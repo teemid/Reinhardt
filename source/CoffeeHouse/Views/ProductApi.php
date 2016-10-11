@@ -11,13 +11,13 @@ use \CoffeeHouse\Forms\ProductForm as ProductForm;
 
 class ProductAPI extends View
 {
-    public function get($request, $id = null)
+    public function get($request)
     {
         $result = array();
 
-        if ($request['GET'])
+        if (!empty($request['query_params']))
         {
-            $result = Product::get($request['GET']);
+            $result = Product::get($request['query_params']);
         }
         else
         {
@@ -33,7 +33,10 @@ class ProductAPI extends View
         $result = null;
 
         if ($form->is_valid()) {
-            $created_object = Product::create($form->cleaned_data);
+            $id = Product::create($form->cleaned_data);
+
+            $created_object = Product::get(array($id));
+
             $result = new JsonResponse($created_object);
         }
         else
@@ -45,6 +48,6 @@ class ProductAPI extends View
     }
 
     public function delete($request) {
-        return new JsonResponse(array('Successfully deleted ' . $request['GET']['id']));
+        return new JsonResponse('Successfully deleted ' . $request['query_params']);
     }
 }

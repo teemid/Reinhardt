@@ -92,14 +92,12 @@ abstract class Form
     {
         $value = $this->raw_values[$property];
 
-        if ($value === 'true')
-        {
-            return 1;
+        if (gettype($value) != 'boolean') {
+            throw new ValidationError('Property ' . $property . ' is not a boolean value.');
         }
-        elseif ($value === 'false')
-        {
-            return 0;
-        } else
+
+        // NOTE (Emil): json_decode: 'true' => 1, 'false' => 0, and BOOLEAN is an alias of TINYINT(1).
+        if (!($value === False || $value === True))
         {
             throw new ValidationError('Property ' . $property . ' is not a boolean value.');
         }

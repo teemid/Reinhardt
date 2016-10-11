@@ -27,6 +27,12 @@ class ExtraAPI extends View
         return new JsonResponse($result);
     }
 
+    public function delete($request) {
+        $result = Extra::delete($request['query_params']);
+
+        return new JsonResponse('Successfully deleted ' . $request['query_params']);
+    }
+
     public function post($request)
     {
         $form = new ExtraForm($request['POST']);
@@ -34,7 +40,8 @@ class ExtraAPI extends View
 
         if ($form->is_valid()) {
             $created_object = Extra::create($form->cleaned_data);
-            $result = new JsonResponse($created_object);
+
+            $result = new JsonResponse(Extra::get(array('id' => $created_object)));
         }
         else
         {

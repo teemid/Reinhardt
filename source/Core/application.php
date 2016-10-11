@@ -64,21 +64,27 @@ class Application
     }
 
     private function formRequest() {
-        $path = $_SERVER['REQUEST_URI'];
+        $path = explode('?', $_SERVER['REQUEST_URI']);
+        $method = $_SERVER['REQUEST_METHOD'];
+        $request_content = array();
 
-        $result = explode('?', $path);
-        $resource = $result[0];
-        $query = $result[1];
+        if ($method == 'POST') {
+            $json = file_get_contents('php://input');
+            $request_content = json_decode($json, true);
+        }
 
         $http_request = array(
-            'method' => $_SERVER['REQUEST_METHOD'],
-            'query' => $query,
-            'path'   => $resource,
-            'scheme' => $_SERVER['REQUEST_SCHEME'],
-            'GET'    => $_GET,
-            'POST'   => $_POST,
-            'FILES'  => $_FILES,
+            'method'        => $_SERVER['REQUEST_METHOD'],
+            'path'          => $_SERVER['DOCUMENT_URI'],
+            'scheme'        => $_SERVER['REQUEST_SCHEME'],
+            'query_string'  => $_SERVER['QUERY_STRING'],
+            'query_params'  => array(),
+            'GET'           => $_SERVER['GET'],
+            'POST'          => $request_content,
+            'FILES'         => $_FILES,
         );
+
+        parse_str($http_request['query_string'], $http_request['query_params']);
 
         return $http_request;
     }
