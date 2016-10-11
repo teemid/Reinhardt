@@ -1,0 +1,64 @@
+.header {
+    background-color: #222;
+}
+
+.header-title {
+    color: white;
+    font-size: 2.5rem;
+}
+
+.header-shopping-icon {
+    color: white;
+    cursor: pointer;
+}
+
+.button {
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.button:hover {
+    background-color: #222;
+    color: white;
+}
+
+.product-list,
+.extra-list {
+    list-style: none;
+}
+
+.product,
+.extra {
+    border: 1px solid black;
+}
+
+.product:first-child,
+.extra:first-child {
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+}
+
+.product:last-child,
+.extra:last-child {
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.product-add-button,
+.product-remove-button,
+.extra-add-button,
+.extra-remove-button {
+    cursor: pointer;
+}
+
+.footer {
+    background-color: #222;
+}
+
+.footer-text {
+    text-align: center;
+    color: white;
+}

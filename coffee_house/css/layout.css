@@ -1,0 +1,106 @@
+.body-wrapper {
+    min-height: 100%;
+    margin-bottom: -1.8rem;
+}
+
+.center-vertical {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.row {
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.column-full {
+    width: 100%;
+    float: left;
+}
+
+.column-half {
+    width: 50%;
+    float: left;
+}
+
+.column-third {
+    width: 33%;
+    float: left;
+}
+
+.column-quarter {
+    width: 25%;
+    float: left;
+}
+
+.button {
+    padding: 0.5rem;
+}
+
+.list {
+    display: block;
+    margin-bottom: 2rem;
+    padding: 0;
+    width: 30%;
+}
+
+.list-element {
+    display: inline-block;
+    width: 100%;
+}
+
+.product-list,
+.extra-list {
+    width: 80%;
+}
+
+.product,
+.extra {
+    padding: 1rem;
+}
+
+.product-name,
+.product-price,
+.extra-name,
+.extra-price {
+    float: left;
+    width: 40%;
+}
+
+.product-add-button,
+.product-remove-button,
+.extra-add-button,
+.extra-remove-button {
+    float: right;
+    width: 10%;
+}
+
+.form {
+
+}
+
+input {
+    padding: 0.25rem;
+}
+
+.label {
+    display: inline-block;
+}
+
+.header-title {
+    display: inline-block;
+    float: left;
+    margin-left: 1.5rem;
+}
+
+.header-shopping-icon {
+    display: inline-block;
+    float: right;
+    padding: 0 1rem;
+}
+
+.footer {
+    height: 1.8rem;
+}

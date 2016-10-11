@@ -5,13 +5,22 @@ var CoffeeHouse = CoffeeHouse || {};
         var self = this;
 
         var order = new Proxy({ total: 0 }, {
-            set: CoffeeHouse.Core.log,
-            deleteProperty: CoffeeHouse.Core.log,
+            set: function (target, property, value) {
+
+
+                target[property] = value;
+            },
+            deleteProperty: function (target, property) {
+                delete target[property];
+            },
         });
-        var api = CoffeeHouse.Core.Ajax(url);
+        var api = CoffeeHouse.Ajax(url);
         var UI = {
             list: document.querySelector(order_list_query),
             total: document.querySelector(order_total_query),
+            listeners: {
+                remove: CoffeeHouse.Core.log
+            }
         };
 
         function add(product) {
@@ -38,11 +47,20 @@ var CoffeeHouse = CoffeeHouse || {};
             }
         }
 
+        function addElement() {
+
+        }
+
         function updateTotal(order, product) {
             order.total += product.price;
         }
 
         function createOrderItem(product) {
+            var orderItem = CoffeeHouse.DOM.createElement('li', {
+                class: 'list-item order-item',
+            });
+            var orderName = CoffeeHouse.DOM.createParagraph('order-name', product.name);
+            var orderPrice = CoffeeHouse.DOM.createParagraph('order-price', product)
             var orderItem = document.createElement('li');
             var orderName = document.createElement('p');
             var orderPrice = document.createElement('p');

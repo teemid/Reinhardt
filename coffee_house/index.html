@@ -5,82 +5,95 @@
         <title>Kaffebar</title>
         <meta charset="utf-8">
 
-        <link rel="stylesheet" href="/css/style.css">
+        <link rel="stylesheet" href="/css/global.css">
+        <link rel="stylesheet" href="/css/layout.css">
+        <link rel="stylesheet" href="/css/styles.css">
+        <link href="https://fonts.googleapis.com/css?family=Oswald|Slabo+27px" rel="stylesheet">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
     </head>
     <body>
         <div class="body-wrapper">
-            <header>
-                <h1>Kaffebar</h1>
-                <i class="fa fa-2x fa-shopping-cart"></i>
-                <div class="order-wrapper">
-                    <li class="order-list"></li>
+            <header class="header">
+                <h1 class="header-title">CoffeeHouse</h1>
+
+                <i class="header-shopping-icon fa fa-2x fa-shopping-cart"></i>
+
+                <div class="order">
+                    <li class="list order-list"></li>
                     <div class="order-total"></div>
                 </div>
             </header>
 
             <main>
                 <div class="row">
-                    <div class="columns-6">
+                    <div class="column-quarter">
                         <div class="row">
-                            <ul class="products-list"></ul>
+                            <ul class="list product-list"></ul>
                         </div>
                         <div class="row">
-                            <form class="products-form" method="POST">
+                            <form class="form product-form">
                                 <div class="row">
-                                    <label for="">Produktnavn:</label>
+                                    <label class="label">Name:</label>
                                     <input type="text" name="name">
                                 </div>
                                 <div class="row">
-                                    <label for="">Pris:</label>
+                                    <label class="label">Price:</label>
                                     <input type="number" name="price">
                                 </div>
-
                                 <div class="row">
-                                    <label for="">Doubleable?</label>
+                                    <label class="label">Doubleable?</label>
                                     <input type="checkbox" name="doubleable">
                                 </div>
-
                                 <div class="row">
-                                    <button type="submit">Legg til ny drikke</button>
+                                    <button class="button product-form-button" type="submit">Add new beverage</button>
                                 </div>
                             </form>
                         </div>
                     </div>
-                    <div class="columns-6">
+                    <div class="column-quarter">
                         <div class="row">
-                            <ul class="extras-list"></ul>
+                            <ul class="extra-list list"></ul>
                         </div>
 
                         <div class="row">
-                            <form class="extras-form" method="POST">
+                            <form class="form extra-form">
                                 <div class="row">
                                     <div class="column-12">
                                         <div class="row">
-                                            <label for="">Navn: </label>
+                                            <label class="label">Name: </label>
                                             <input type="text" name="name">
                                         </div>
 
                                         <div class="row">
-                                            <label for="">Pris:</label>
+                                            <label class="label">Price:</label>
                                             <input type="number" name="price">
                                         </div>
 
                                         <div class="row">
-                                            <button type="submit">Legg til ny extra</button>
+                                            <button class="button" type="submit">Add new extra</button>
                                         </div>
                                     </div>
                                 </div>
                             </form>
                         </div>
                     </div>
+                    <div class="column-half">
+                        <h2>Order</h2>
+                        <div class="row">
+                            <ul class="list order-list"></ul>
+                        </div>
+                    </div>
                 </div>
             </main>
         </div>
 
-        <footer><p>Emil Grunt &copy; 2016</p></footer>
+        <footer class="footer">
+            <p class="footer-text center-vertical">Emil Grunt &copy; 2016</p>
+        </footer>
 
         <script src="/js/coffee_house.js"></script>
+        <script src="/js/ajax.js"></script>
+        <script src="/js/dom.js"></script>
         <script src="/js/order.js"></script>
         <script src="/js/list.js"></script>
         <script src="/js/core.js"></script>

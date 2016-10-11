@@ -1,0 +1,33 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    box-sizing: border-box;
+    display: inline-block;
+    width: 100%;
+}
+
+main {
+    padding: 1.5rem;
+}
+
+footer {
+    width: 100%;
+}
+
+p {
+    font-family: 'Slabo 27px', serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Oswald', sans-serif;
+}

@@ -6,17 +6,17 @@ var CoffeeHouse = (function (CoffeeHouse) {
 
         self.products = new CoffeeHouse.List({
             url: '/api/v1/products',
-            list: '.products-list',
-            form: '.products-form',
+            list: '.product-list',
+            form: '.product-form',
             createElement: createProduct,
-            removeButton: '.products-remove',
+            removeButton: '.product-remove-button',
         });
         self.extras = new CoffeeHouse.List({
             url: '/api/v1/extras',
-            list: '.extras-list',
-            form: '.extras-form',
-            createElement: createProduct,
-            removeButton: '.extras-remove',
+            list: '.extra-list',
+            form: '.extra-form',
+            createElement: createExtra,
+            removeButton: '.extra-remove-button',
         });
         self.orders = new CoffeeHouse.Order('/api/v1/orders');
 
@@ -29,55 +29,34 @@ var CoffeeHouse = (function (CoffeeHouse) {
     function addProductListener(event) {
         var productElement = event.target.parentElement;
         var id = productElement.dataset.productId;
-        var product = products.get(id);
+        var product = products.get(String(id));
 
         orders.add(product);
     }
 
     function createProduct(product) {
-        var listElement = document.createElement('li');
-        var nameNode = document.createElement('p');
-        var priceNode = document.createElement('p');
-        var addButton = document.createElement('i');
-        var removeButton = document.createElement('i');
+        var listElement  = CoffeeHouse.DOM.createElement('li', { class: 'list-element product' });
+        var nameNode     = CoffeeHouse.DOM.createParagraph('product-name', product.name);
+        var priceNode    = CoffeeHouse.DOM.createParagraph('product-price', product.price);
+        var addButton    = CoffeeHouse.DOM.createElement('i', { class: 'product-add-button fa fa-cart-plus' });
+        var removeButton = CoffeeHouse.DOM.createElement('i', { class: 'product-remove-button fa fa-times' });
 
-        listElement.className = 'product';
-        addButton.className = 'fa fa-cart-plus';
-        removeButton.className = 'fa fa-times';
+        addButton.addEventListener('click', addProductListener);
 
-        nameNode.innerHTML = product.name;
-        priceNode.innerHTML = product.price;
-
-        listElement.dataset.productId = product.id;
-
-        listElement.appendChild(nameNode);
-        listElement.appendChild(priceNode);
-        listElement.appendChild(addButton);
-        listElement.appendChild(removeButton);
+        CoffeeHouse.DOM.append(listElement, [nameNode, priceNode, addButton, removeButton]);
 
         return listElement;
     }
 
     function createExtra(extra) {
-        var listElement = document.createElement('li');
-        var nameNode = document.createElement('p');
-        var priceNode = document.createElement('p');
-        var addButton = document.createElement('i');
-        var removeButton = document.createElement('i');
+        var priceText    = extra.price == 0 ? 'Free' : extra.price;
+        var listElement  = CoffeeHouse.DOM.createElement('li', { class: 'list-element extra' });
+        var nameNode     = CoffeeHouse.DOM.createParagraph('extra-name', extra.name);
+        var priceNode    = CoffeeHouse.DOM.createParagraph('extra-price', priceText);
+        var addButton    = CoffeeHouse.DOM.createElement('i', { class: 'extra-add-button fa fa-cart-plus' });
+        var removeButton = CoffeeHouse.DOM.createElement('i', { class: 'extra-remove-button fa fa-times' });
 
-        listElement.className = 'product';
-        addButton.className = 'fa fa-cart-plus';
-        removeButton.className = 'fa fa-times';
-
-        nameNode.innerHTML = extra.name;
-        priceNode.innerHTML = extra.price;
-
-        listElement.dataset.extraId = extra.id;
-
-        listElement.appendChild(nameNode);
-        listElement.appendChild(priceNode);
-        listElement.appendChild(addButton);
-        listElement.appendChild(removeButton);
+        CoffeeHouse.DOM.append(listElement, [nameNode, priceNode, addButton, removeButton]);
 
         return listElement;
     }
