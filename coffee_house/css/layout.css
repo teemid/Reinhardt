@@ -77,8 +77,8 @@
     width: 10%;
 }
 
-.order-list {
-    width: 50%;
+.order-form {
+    width: 80%;
 }
 
 .order-line {
@@ -104,12 +104,13 @@
     width: 25%;
 }
 
-.form {
-
+.order-total-label {
+    float: left;
 }
 
-input {
-    padding: 0.25rem;
+.order-total {
+    display: inline-block;
+    padding: 0 0.5rem;
 }
 
 .label {

@@ -72,6 +72,10 @@
     text-anchor: middle;
 }
 
+.order-line-remove-button {
+    cursor: pointer;
+}
+
 .footer {
     background-color: #222;
 }
