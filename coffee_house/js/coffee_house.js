@@ -4,12 +4,12 @@ var CoffeeHouse = (function (CoffeeHouse) {
     function CoffeeHouse() {
         var self = this;
 
-        self.products = new CoffeeHouse.List({
-            url: '/api/v1/products',
-            list: '.product-list',
-            form: '.product-form',
-            createElement: createProduct,
-            removeButton: '.product-remove-button',
+        self.beverages = new CoffeeHouse.List({
+            url: '/api/v1/beverages',
+            list: '.beverage-list',
+            form: '.beverage-form',
+            createElement: createBeverage,
+            removeButton: '.beverage-remove-button',
         });
         self.extras = new CoffeeHouse.List({
             url: '/api/v1/extras',
@@ -24,26 +24,35 @@ var CoffeeHouse = (function (CoffeeHouse) {
             '.order-total'
         );
 
-        self.products.initialize();
+        self.beverages.initialize();
         self.extras.initialize();
     }
 
     var event = new CustomEvent('order_add', { 'detail': {} });
 
     function addProductListener(event) {
-        var productElement = event.target.parentElement;
-        var id = productElement.dataset.listId;
-        var product = products.get(id);
+        var beverageElement = event.target.parentElement;
+        var id = beverageElement.dataset.listId;
+        var beverage = beverages.get(id);
 
-        orders.add(product);
+        orders.add('beverage', beverage);
     }
 
-    function createProduct(product) {
-        var listElement  = CoffeeHouse.DOM.createElement('li', { class: 'list-element product' });
-        var nameNode     = CoffeeHouse.DOM.createParagraph('product-name', product.name);
-        var priceNode    = CoffeeHouse.DOM.createParagraph('product-price', product.price);
-        var addButton    = CoffeeHouse.DOM.createElement('i', { class: 'product-add-button fa fa-cart-plus' });
-        var removeButton = CoffeeHouse.DOM.createElement('i', { class: 'product-remove-button fa fa-times' });
+    function addExtraListener(event) {
+        console.log(event);
+        var extraElement = event.target.parentElement;
+        var id = extraElement.dataset.listId;
+        var extra = extras.get('extra', id);
+
+        orders.add(extra);
+    }
+
+    function createBeverage(product) {
+        var listElement  = CoffeeHouse.DOM.createElement('li', { class: 'list-element beverage' });
+        var nameNode     = CoffeeHouse.DOM.createParagraph('beverage-name', product.name);
+        var priceNode    = CoffeeHouse.DOM.createParagraph('beverage-price', product.price);
+        var addButton    = CoffeeHouse.DOM.createElement('i', { class: 'beverage-add-button fa fa-cart-plus' });
+        var removeButton = CoffeeHouse.DOM.createElement('i', { class: 'beverage-remove-button fa fa-times' });
 
         addButton.addEventListener('click', addProductListener);
 
@@ -59,6 +68,8 @@ var CoffeeHouse = (function (CoffeeHouse) {
         var priceNode    = CoffeeHouse.DOM.createParagraph('extra-price', priceText);
         var addButton    = CoffeeHouse.DOM.createElement('i', { class: 'extra-add-button fa fa-cart-plus' });
         var removeButton = CoffeeHouse.DOM.createElement('i', { class: 'extra-remove-button fa fa-times' });
+
+        addButton.addEventListener('click', addExtraListener);
 
         CoffeeHouse.DOM.append(listElement, [nameNode, priceNode, addButton, removeButton]);
 

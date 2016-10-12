@@ -16,7 +16,7 @@ class Application
             '/^v1$/' => array(
                 '/^extras$/' => new \CoffeeHouse\Views\ExtraAPI,
                 '/^orders$/' => new \CoffeeHouse\Views\OrderAPI,
-                '/^products$/' => new \CoffeeHouse\Views\ProductAPI,
+                '/^beverages$/' => new \CoffeeHouse\Views\ProductAPI,
             )
         );
     }

@@ -1,21 +1,29 @@
 var CoffeeHouse = CoffeeHouse || {};
 
+
 (function (CoffeeHouse) {
     function Order(url, order_list_query, order_total_query) {
         var self = this;
 
         var order = new Proxy({ total: 0 }, {
             set: function (target, property, value) {
-                if (value.product) {
-                    var product = value.product;
-                    var orderLineElement = UI.list.querySelector(['[data-order-line-id="' + product.id +'"']);
+                console.log(target, property, value);
 
-                    orderLineElement ? updateOrderLine(orderLineElement, product.price, product.quantity) : addElement(value);
+                if (value.product) {
+                    addElement(value);
+                }
+
+                if (property === 'quantity') {
+                    var queryString = '[data-order-line-id="' + key(value.type, product) +'"]';
+                    var orderLineElement = UI.list.querySelector(queryString);
+                    updateOrderLine(orderLineElement, product.price, product.quantity);
                 }
 
                 target[property] = value;
             },
             deleteProperty: function (target, property) {
+                console.log(target, property);
+
                 delete target[property];
             },
         });
@@ -24,7 +32,7 @@ var CoffeeHouse = CoffeeHouse || {};
             list: document.querySelector(order_list_query),
             total: document.querySelector(order_total_query),
             listeners: {
-                remove: CoffeeHouse.Core.log
+                remove: removeButtonListener
             }
         };
 
@@ -32,41 +40,48 @@ var CoffeeHouse = CoffeeHouse || {};
 
         }
 
-        function add(product) {
+        function key(type, product) {
+            return type + '-' + product.id;
+        }
+
+        function add(type, product) {
+            console.log('add: ', product);
             // NOTE (Emil): If the product is already in the order, increment the quantity.
             if (product.id in order) {
-                order[product.id].quantity += 1;
+                order[key(type, product)].quantity += 1;
             }
             else { // Else add the product with an initial quantity of 1.
-                order[product.id] = { product: product, quantity: 1 };
+                order[key(type, product)] = { product: product, quantity: 1, type: type };
             }
-
-            updateTotal(order, product);
         }
 
         function remove(product) {
             var item = order[product.id];
 
-            if (!item) { return; } // NOTE (Emil): We don't have an item, so do nothing.
-
-            item.quantity -= 1;
-
-            if (item.quantity == 0) {
+            if (item) {
                 delete order[product.id];
             }
         }
 
         function addElement(orderLine) {
             var element = createOrderItem(orderLine);
-            element.dataset.orderLineId = orderLine.product.id;
+            element.dataset.orderLineId = key(orderLine.type, orderLine.product);
             UI.list.appendChild(element);
+
+            updateTotal(parseInt(orderLine.product.price));
         }
 
         function removeElement(product) {
 
         }
 
+        function removeButtonListener(event) {
+            var item = event.target.parentElement;
+            var id = item.dataset.dataOrderLineId;
+        }
+
         function updateOrderLine(element, price, quantity) {
+            console.log(element, price, quantity);
             price = parseInt(price);
             quantity = parseInt(quantity);
 
@@ -77,11 +92,11 @@ var CoffeeHouse = CoffeeHouse || {};
             orderLineQuantity.innerHTML = quantity;
             orderLineTotal.innerHTML = price * quantity;
 
+            console.log(price);
             updateTotal(price);
         }
 
         function updateTotal(price) {
-            console.log(price);
             order.total += price;
 
             UI.total.innerHTML = order.total;

@@ -51,26 +51,26 @@
     width: 100%;
 }
 
-.product-list,
+.beverage-list,
 .extra-list {
     width: 80%;
 }
 
-.product,
+.beverage,
 .extra {
     padding: 1rem;
 }
 
-.product-name,
-.product-price,
+.beverage-name,
+.beverage-price,
 .extra-name,
 .extra-price {
     float: left;
     width: 40%;
 }
 
-.product-add-button,
-.product-remove-button,
+.beverage-add-button,
+.beverage-remove-button,
 .extra-add-button,
 .extra-remove-button {
     float: right;

@@ -25,30 +25,30 @@
     color: white;
 }
 
-.product-list,
+.beverage-list,
 .extra-list {
     list-style: none;
 }
 
-.product,
+.beverage,
 .extra {
     border: 1px solid black;
 }
 
-.product:first-child,
+.beverage:first-child,
 .extra:first-child {
     border-top-right-radius: 5px;
     border-top-left-radius: 5px;
 }
 
-.product:last-child,
+.beverage:last-child,
 .extra:last-child {
     border-bottom-right-radius: 5px;
     border-bottom-left-radius: 5px;
 }
 
-.product-add-button,
-.product-remove-button,
+.beverage-add-button,
+.beverage-remove-button,
 .extra-add-button,
 .extra-remove-button {
     cursor: pointer;
