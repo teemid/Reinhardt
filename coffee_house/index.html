@@ -2,7 +2,7 @@
 
 <html>
     <head>
-        <title>Kaffebar</title>
+        <title>Coffee House</title>
         <meta charset="utf-8">
 
         <link rel="stylesheet" href="/css/global.css">
@@ -14,9 +14,7 @@
     <body>
         <div class="body-wrapper">
             <header class="header">
-                <h1 class="header-title">CoffeeHouse</h1>
-
-                <i class="header-shopping-icon fa fa-2x fa-shopping-cart"></i>
+                <h1 class="header-title">Coffee House</h1>
             </header>
 
             <main>
@@ -77,8 +75,17 @@
                     <div class="column-half">
                         <h2>Order</h2>
                         <div class="row">
-                            <ul class="list order-list"></ul>
-                            <div class="order-total"></div>
+                            <form class="order-form">
+                                <div class="order-sentinel"></div>
+                                <div class="row">
+                                    <label class="order-total-label">Total:</label>
+                                    <p class="order-total"></p>
+                                    <input class="order-hidden-total" type="hidden">
+                                </div>
+                                <div class="row">
+                                    <button class="button order-button">Bestill</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -95,6 +102,5 @@
         <script src="/js/order.js"></script>
         <script src="/js/list.js"></script>
         <script src="/js/core.js"></script>
-        <script src="/js/script.js"></script>
     </body>
 </html>

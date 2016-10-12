@@ -20,8 +20,9 @@ var CoffeeHouse = (function (CoffeeHouse) {
         });
         self.orders = new CoffeeHouse.Order(
             '/api/v1/orders',
-            '.order-list',
-            '.order-total'
+            '.order-form',
+            '.order-total',
+            '.order-hidden-total'
         );
 
         self.beverages.initialize();
@@ -42,9 +43,9 @@ var CoffeeHouse = (function (CoffeeHouse) {
         console.log(event);
         var extraElement = event.target.parentElement;
         var id = extraElement.dataset.listId;
-        var extra = extras.get('extra', id);
+        var extra = extras.get(id);
 
-        orders.add(extra);
+        orders.add('extra', extra);
     }
 
     function createBeverage(product) {
@@ -78,3 +79,7 @@ var CoffeeHouse = (function (CoffeeHouse) {
 
     return CoffeeHouse;
 })(CoffeeHouse);
+
+document.addEventListener("DOMContentLoaded", function (event) {
+    var coffeeHouse = CoffeeHouse();
+});
