@@ -2,10 +2,10 @@ var CoffeeHouse = CoffeeHouse || {};
 
 
 (function (CoffeeHouse) {
-    function Order(url, order_list_query, order_total_query, hidden_total_query) {
+    function Order(url, order_list_query, order_total_query) {
         var self = this;
 
-        var order = new Proxy({ total: 0 }, {
+        var order = new Proxy({ beverage: {}, extra: {}, total: 0 }, {
             set: function (target, property, value) {
                 if (value.product) {
                     addElement(value);
@@ -36,7 +36,6 @@ var CoffeeHouse = CoffeeHouse || {};
             UI.form     = document.querySelector(order_list_query);
             UI.total    = document.querySelector(order_total_query);
             UI.sentinel = document.querySelector('.order-sentinel');
-            UI.hiddenTotal = document.querySelector(hidden_total_query);
 
             UI.form.addEventListener('submit', UI.listeners.form);
 
@@ -48,17 +47,20 @@ var CoffeeHouse = CoffeeHouse || {};
         }
 
         function add(type, product) {
+            var products = order[type];
             var _key = key(type, product);
             // NOTE (Emil): If the product is already in the order, increment the quantity.
-            if (_key in order) {
+            if (product.id in products) {
                 var element = UI.form.querySelector('[data-order-line-id="' + _key + '"]');
-                var orderLine = order[_key];
+                var orderLine = order[type][product.id];
                 orderLine.quantity += 1;
 
-                updateOrderLine(element, orderLine.product.price, orderLine.quantity);
+                updateOrderLine(element, type, orderLine);
             }
             else { // Else add the product with an initial quantity of 1.
-                order[key(type, product)] = { product: product, quantity: 1, type: type };
+                order[type][product.id] = { product: product, quantity: 1 };
+
+                addElement(type, order[type][product.id]);
             }
         }
 
@@ -70,28 +72,24 @@ var CoffeeHouse = CoffeeHouse || {};
             }
         }
 
-        function addElement(orderLine) {
-            var element = createOrderItem(orderLine);
-            element.dataset.orderLineId = key(orderLine.type, orderLine.product);
+        function addElement(type, orderLine) {
+            var element = createOrderItem(type, orderLine);
+            element.dataset.orderLineId = key(type, orderLine.product);
 
             UI.form.insertBefore(element, UI.sentinel);
 
             updateTotal(parseInt(orderLine.product.price));
         }
 
-        function updateOrderLine(element, price, quantity) {
-            price = parseInt(price);
-            quantity = parseInt(quantity);
+        function updateOrderLine(element, type, orderLine) {
+            price = parseInt(orderLine.product.price);
+            quantity = parseInt(orderLine.quantity);
 
             var orderLineQuantity = element.querySelector('.order-line-quantity');
-            var orderLineHiddenQuantity = element.querySelector('.order-line-hidden-quantity');
             var orderLineTotal = element.querySelector('.order-line-total');
-            var orderLineHiddenTotal = element.querySelector('.order-line-hidden-total');
 
             orderLineQuantity.innerHTML = quantity;
-            orderLineHiddenQuantity.value = quantity;
             orderLineTotal.innerHTML = price * quantity;
-            orderLineHiddenTotal.value = price * quantity;
 
             updateTotal(price);
         }
@@ -100,7 +98,6 @@ var CoffeeHouse = CoffeeHouse || {};
             order.total += price;
 
             UI.total.innerHTML = order.total;
-            UI.hiddenTotal.value = order.total;
         }
 
         function removeElement(orderLine) {
@@ -117,12 +114,9 @@ var CoffeeHouse = CoffeeHouse || {};
         function formListener(event) {
             event.preventDefault();
 
-            var inputs = UI.form.querySelectorAll('input');
-            var inputs = Array.prototype.slice.call(inputs);
-
-            inputs.forEach(function (input) {
-                console.log(input);
-            });
+            api.post(order)
+                .then(CoffeeHouse.Core.log)
+                .catch(CoffeeHouse.Core.log);
         }
 
         function removeButtonListener(event) {
@@ -132,7 +126,7 @@ var CoffeeHouse = CoffeeHouse || {};
             delete order[id];
         }
 
-        function createOrderItem(orderLine) {
+        function createOrderItem(type, orderLine) {
             var quantity = orderLine.quantity;
             var product = orderLine.product;
 
@@ -140,18 +134,11 @@ var CoffeeHouse = CoffeeHouse || {};
             var name           = CoffeeHouse.DOM.createParagraph('order-line-name', product.name);
             var total          = CoffeeHouse.DOM.createParagraph('order-line-total', product.price);
             var quantity       = CoffeeHouse.DOM.createParagraph('order-line-quantity', quantity);
-
-            var hiddenTotal    = CoffeeHouse.DOM.createInput('hidden', parseInt(product.price), { class: 'order-line-hidden-total' });
-            var hiddenQuantity = CoffeeHouse.DOM.createInput('hidden', parseInt(quantity), { class: 'order-line-hidden-quantity' });
-
             var removeButton   = CoffeeHouse.DOM.createElement('i', { class: 'order-line-remove-button fa fa-times' });
-
-            hiddenTotal.setAttribute('name', 'total-' + product.id);
-            hiddenQuantity.setAttribute('name', 'quantity-' + product.id);
 
             removeButton.addEventListener('click', UI.listeners.remove);
 
-            CoffeeHouse.DOM.append(row, [name, quantity, total, hiddenTotal, hiddenQuantity, removeButton]);
+            CoffeeHouse.DOM.append(row, [name, quantity, total, removeButton]);
 
             return row;
         }

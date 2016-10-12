@@ -110,7 +110,12 @@ var CoffeeHouse = CoffeeHouse || {};
             var data = {};
 
             inputs.forEach(function (input) {
-                data[input.name] = input.type == 'checkbox' ? input.checked : input.value;
+                if (input.type === 'checkbox') {
+                    data[input.name] = input.checked ? true : false;
+                }
+                else {
+                    data[input.name] = input.value;
+                }
             });
 
             button.disabled = true;

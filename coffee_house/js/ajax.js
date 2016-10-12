@@ -27,7 +27,7 @@ var CoffeeHouse = CoffeeHouse || {};
                 if (args) {
                     request.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
 
-                    request.send(args['content']);
+                    request.send(args);
                 }
                 else {
                     request.send();
@@ -61,7 +61,10 @@ var CoffeeHouse = CoffeeHouse || {};
             },
             post: function (args) {
                 var content = serializeToJson(args);
-                return makeAjaxRequest('POST', url, { content: content });
+
+                console.log(content);
+
+                return makeAjaxRequest('POST', url, content);
             },
             delete: function (args) {
                 var encoded_url = url;
@@ -70,7 +73,7 @@ var CoffeeHouse = CoffeeHouse || {};
                     encoded_url = [encoded_url, '?', urlEncode(args)].join('');
                 }
 
-                return makeAjaxRequest('DELETE', encoded_url, args);
+                return makeAjaxRequest('DELETE', encoded_url);
             }
         };
     }
