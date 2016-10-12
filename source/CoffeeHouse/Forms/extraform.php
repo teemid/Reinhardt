@@ -4,6 +4,7 @@ namespace CoffeeHouse\Forms;
 
 use \Core\Form as Form;
 
+
 class ExtraForm extends Form
 {
     protected $requirements = array(

@@ -5,11 +5,11 @@ namespace CoffeeHouse\Views;
 use \Core\Response\JsonResponse as JsonResponse;
 use \Core\View as View;
 
-use \CoffeeHouse\Models\Product as Product;
-use \CoffeeHouse\Forms\ProductForm as ProductForm;
+use \CoffeeHouse\Models\Beverage as Beverage;
+use \CoffeeHouse\Forms\BeverageForm as BeverageForm;
 
 
-class ProductAPI extends View
+class BeverageAPI extends View
 {
     public function delete($request) {
         $query = $request['query_params'];
@@ -17,7 +17,7 @@ class ProductAPI extends View
         if (array_key_exists('id', $query)) {
             $arguments = array('id' => intval($query['id']));
 
-            $instance = Product::delete($arguments);
+            $instance = Beverage::delete($arguments);
 
             return new JsonResponse($instance);
         }
@@ -33,11 +33,11 @@ class ProductAPI extends View
 
         if (!empty($request['query_params']))
         {
-            $result = Product::get($request['query_params']);
+            $result = Beverage::get($request['query_params']);
         }
         else
         {
-            $result = Product::all();
+            $result = Beverage::all();
         }
 
         return new JsonResponse($result);
@@ -45,13 +45,13 @@ class ProductAPI extends View
 
     public function post($request)
     {
-        $form = new ProductForm($request['POST']);
+        $form = new BeverageForm($request['POST']);
         $result = null;
 
         if ($form->is_valid()) {
-            $id = Product::create($form->cleaned_data);
+            $id = Beverage::create($form->cleaned_data);
 
-            $created_object = Product::get(array('id' => $id));
+            $created_object = Beverage::get(array('id' => $id));
 
             $result = new JsonResponse($created_object);
         }

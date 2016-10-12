@@ -27,10 +27,12 @@ abstract class Form
 
         foreach ($this->requirements as $property => $requirements)
         {
+            $type =  $requirements['type'];
+
             try {
                 if (array_key_exists($property, $this->raw_values))
                 {
-                    $type_validation = 'validate_' . $requirements['type'];
+                    $type_validation = 'validate_' . $type;
 
                     $this->$type_validation($property, $requirements);
 
@@ -40,7 +42,14 @@ abstract class Form
                         $this->$validation_function($this->raw_values[$property]);
                     }
 
-                    $cleaned_data[$property] = $this->raw_values[$property];
+                    if ($type == 'boolean')
+                    {
+                        $cleaned_data[$property] = $this->raw_values[$property] ? 1 : 0;
+                    }
+                    else
+                    {
+                        $cleaned_data[$property] = $this->raw_values[$property];
+                    }
                 }
                 else
                 {

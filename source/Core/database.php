@@ -31,10 +31,6 @@ class Database
         self::$pdo = null;
     }
 
-    public function exec($statement) {
-        return self::$pdo->exec($statement);
-    }
-
     public function lastInsertedId($name = null) {
         return self::$pdo->lastInsertId($name);
     }

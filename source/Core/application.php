@@ -14,9 +14,9 @@ class Application
         $this->url_config = array();
         $this->url_config['/^api$/'] = array(
             '/^v1$/' => array(
+                '/^beverages$/' => new \CoffeeHouse\Views\BeverageAPI,
                 '/^extras$/' => new \CoffeeHouse\Views\ExtraAPI,
                 '/^orders$/' => new \CoffeeHouse\Views\OrderAPI,
-                '/^beverages$/' => new \CoffeeHouse\Views\ProductAPI,
             )
         );
     }
