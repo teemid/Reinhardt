@@ -1,8 +1,8 @@
 <?php
 
-namespace Core;
+namespace Reinhardt;
 
-use \Core\Response\HttpResponse as HttpResponse;
+use \Reinhardt\Response\HttpResponse as HttpResponse;
 
 class View
 {

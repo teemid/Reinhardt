@@ -2,8 +2,8 @@
 
 namespace CoffeeHouse\Views;
 
-use \Core\Response\JsonResponse as JsonResponse;
-use \Core\View as View;
+use \Reinhardt\Response\JsonResponse as JsonResponse;
+use \Reinhardt\View as View;
 
 use \CoffeeHouse\Models\Beverage as Beverage;
 use \CoffeeHouse\Forms\BeverageForm as BeverageForm;

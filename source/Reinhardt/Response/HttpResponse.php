@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Response;
+namespace Reinhardt\Response;
 
 
 class HttpResponse

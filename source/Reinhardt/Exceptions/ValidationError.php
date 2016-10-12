@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Exceptions;
+namespace Reinhardt\Exceptions;
 
 
 class ValidationError extends \Exception

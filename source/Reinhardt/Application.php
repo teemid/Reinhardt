@@ -1,24 +1,17 @@
 <?php
 
-namespace Core;
+namespace Reinhardt;
 
-use Core\Exceptions\Http404 as Http404;
+use \Reinhardt\Exceptions\Http404 as Http404;
 
 
 class Application
 {
     private $url_config;
 
-    function __construct()
+    function __construct($url_config)
     {
-        $this->url_config = array();
-        $this->url_config['/^api$/'] = array(
-            '/^v1$/' => array(
-                '/^beverages$/' => new \CoffeeHouse\Views\BeverageAPI,
-                '/^extras$/' => new \CoffeeHouse\Views\ExtraAPI,
-                '/^orders$/' => new \CoffeeHouse\Views\OrderAPI,
-            )
-        );
+        $this->url_config = $url_config;
     }
 
     public function handleRequest()

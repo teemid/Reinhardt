@@ -2,7 +2,7 @@
 
 namespace CoffeeHouse\Forms;
 
-use \Core\Form as Form;
+use \Reinhardt\Form as Form;
 
 
 class BeverageForm extends Form

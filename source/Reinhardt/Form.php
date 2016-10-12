@@ -1,9 +1,9 @@
 <?php
 
-namespace Core;
+namespace Reinhardt;
 
-use Core\Exceptions\ValidationError as ValidationError;
-use Core\Exceptions\ConfigurationError as ConfigurationError;
+use \Reinhardt\Exceptions\ValidationError as ValidationError;
+use \Reinhardt\Exceptions\ConfigurationError as ConfigurationError;
 
 
 abstract class Form

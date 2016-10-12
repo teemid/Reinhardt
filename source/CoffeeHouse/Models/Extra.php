@@ -2,7 +2,7 @@
 
 namespace CoffeeHouse\Models;
 
-use \Core\Model as Model;
+use \Reinhardt\Model as Model;
 
 
 class Extra extends Model

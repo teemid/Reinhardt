@@ -2,8 +2,8 @@
 
 namespace CoffeeHouse\Models;
 
-use \Core\Database as Database;
-use \Core\Model as Model;
+use \Reinhardt\Database as Database;
+use \Reinhardt\Model as Model;
 
 
 class Beverage extends Model

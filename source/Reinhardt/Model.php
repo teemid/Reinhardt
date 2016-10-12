@@ -1,8 +1,8 @@
 <?php
 
-namespace Core;
+namespace Reinhardt;
 
-use \Core\Database as Database;
+use \Reinhardt\Database as Database;
 
 
 abstract class Model

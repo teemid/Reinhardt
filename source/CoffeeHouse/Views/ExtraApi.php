@@ -2,8 +2,8 @@
 
 namespace CoffeeHouse\Views;
 
-use \Core\Response\JsonResponse as JsonResponse;
-use \Core\View as View;
+use \Reinhardt\Response\JsonResponse as JsonResponse;
+use \Reinhardt\View as View;
 
 use \CoffeeHouse\Models\Extra as Extra;
 use \CoffeeHouse\Forms\ExtraForm as ExtraForm;
