@@ -1,6 +1,6 @@
 use coffee_house;
 
-CREATE TABLE IF NOT EXISTS coffee_products
+CREATE TABLE IF NOT EXISTS coffee_beverages
 (
     id INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(120) NOT NULL,
@@ -25,13 +25,13 @@ CREATE TABLE IF NOT EXISTS coffee_orders
     PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXISTS coffee_order_items
+CREATE TABLE IF NOT EXISTS coffee_order_beverages
 (
     order_id INT NOT NULL,
     item_id INT NOT NULL,
     is_double BOOLEAN NOT NULL DEFAULT 0,
     FOREIGN KEY (order_id) REFERENCES coffee_orders (id),
-    FOREIGN KEY (item_id) REFERENCES coffee_products (id)
+    FOREIGN KEY (item_id) REFERENCES coffee_beverages (id)
 );
 
 CREATE TABLE IF NOT EXISTS coffee_order_extras
