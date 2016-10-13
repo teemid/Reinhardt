@@ -22,6 +22,8 @@ var CoffeeHouse = CoffeeHouse || {};
                     var orderLine = order[type][id];
 
                     removeElement(property, orderLine);
+
+                    delete target[type][id];
                 }
                 else
                 {
