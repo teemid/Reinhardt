@@ -14,9 +14,19 @@ var CoffeeHouse = CoffeeHouse || {};
                 target[property] = value;
             },
             deleteProperty: function (target, property) {
-                removeElement(order[property]);
+                var prop = property.split('-');
+                var type = prop[0];
+                var id = prop[1];
 
-                delete target[property];
+                if (type === 'beverage' || type === 'extra') {
+                    var orderLine = order[type][id];
+
+                    removeElement(property, orderLine);
+                }
+                else
+                {
+                    delete target[property];
+                }
             },
         });
         var api = CoffeeHouse.Ajax(url);
@@ -100,10 +110,10 @@ var CoffeeHouse = CoffeeHouse || {};
             UI.total.innerHTML = order.total;
         }
 
-        function removeElement(orderLine) {
+        function removeElement(key, orderLine) {
             var quantity = parseInt(orderLine.quantity);
             var price = parseInt(orderLine.product.price);
-            var query = '[data-order-line-id="' + key(orderLine.type, orderLine.product) + '"]';
+            var query = '[data-order-line-id="' + key + '"]';
             var element = UI.form.querySelector(query);
 
             UI.form.removeChild(element);
