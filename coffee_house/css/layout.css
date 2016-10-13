@@ -121,6 +121,7 @@
     display: inline-block;
     float: left;
     margin-left: 1.5rem;
+    margin-bottom: 0;
 }
 
 .header-shopping-icon {
