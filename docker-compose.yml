@@ -23,15 +23,3 @@ services:
     working_dir: /var/www
     links:
       - db
-  web:
-    container_name: reinhardt_web
-    image: nginx:1
-    ports:
-      - "80:80"
-    volumes:
-      - ./docker/conf/nginx.conf:/etc/nginx/nginx.conf
-      - ./docker/conf/vhost.conf:/etc/nginx/sites-enabled/vhost.conf
-      - ./source:/var/www/public
-      - ./coffee_house:/var/www/coffee_house
-    links:
-      - php
